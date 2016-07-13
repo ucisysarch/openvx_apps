@@ -7,6 +7,9 @@
 #define OCTAVE_LAYERS 5
 #define INPUT_IMAGE "mandrill.pgm"
 
+
+
+
 //img의 포인터를 넣으면, imgname이라는 이름으로 pgm을 生成하는 咸數
 //Make 'imgname.png' from given vx_image.
 void saveimage(char* imgname, vx_image* img)
