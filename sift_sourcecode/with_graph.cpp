@@ -7,8 +7,6 @@
 #define OCTAVE_LAYERS 5
 #define INPUT_IMAGE "mandrill.pgm"
 
-
-
 //Make 'imgname.png' from given vx_image.
 void saveimage(char* imgname, vx_image* img)
 {
@@ -61,6 +59,7 @@ int main(int argc, char* argv[])
 	int height;
 
 	FILE* in = fopen(INPUT_IMAGE, "rb");
+
 	// Declare pointer of vx_uint8 as amount of width*height.
 	vx_uint8* bytes;
 
@@ -96,7 +95,6 @@ int main(int argc, char* argv[])
 	void* data[] = { bytes };
 
 
-
 	//Create context.
 	vx_context context = vxCreateContext();
 
@@ -119,7 +117,6 @@ int main(int argc, char* argv[])
 	//========================================== CREATING VIRTUAL IMAGES ======================================
 	//=========================================================================================================
 
-
 	//Gaussian Pyramid
 	vx_image gau_pyra[OCTAVE_NUM*OCTAVE_LAYERS];
 	for (int i = 0; i < (OCTAVE_LAYERS*OCTAVE_NUM); i++)
@@ -141,6 +138,13 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
 		DOG_pyra[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
 
+	// 3 layers of DOG for input parameters in findSiftKeypointNode.
+	/*
+	vx_image DOG_inputs[(OCTAVE_LAYERS - 1 - 2) * 3 * OCTAVE_NUM];
+	for (int i = 0; i < ((OCTAVE_LAYERS - 1 - 2) * 3 * OCTAVE_NUM); i++)
+		DOG_inputs[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
+	*/
+
 	//Create pyramid for basis of gaussian pyramid we're going to build. Only U8 is allowed.
 	vx_pyramid pyra = vxCreateVirtualPyramid(graph, OCTAVE_NUM, VX_SCALE_PYRAMID_HALF, width, height, VX_DF_IMAGE_U8);
 
@@ -158,7 +162,10 @@ int main(int argc, char* argv[])
 		onedog[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
 
 	vx_array keypointarr = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
-
+	//vx_array keypointarr2 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
+	//vx_array keypointarr3 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
+	//vx_array keypointarr4 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
+	//vx_array keypointarr5 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
 
 	//================================================================================================
 	//========================================== CREATING NODES ======================================
@@ -177,6 +184,7 @@ int main(int argc, char* argv[])
 		//		gau_pyra[15] (1st layer of octave 3) : half sized of gau_pyra[10]
 		//		gau_pyra[20] (1st layer of octave 4) : half sized of gau_pyra[15]
 		if ((gau_pyra[i*OCTAVE_LAYERS] = vxGetPyramidLevel(pyra, i)) == 0) printf("WRONG INDEXING\n");
+
 
 		//next layer is blurred image from previous one.
 		//ex)	gau_pyra[0] = Original x1 size image		--octave 0
@@ -221,7 +229,7 @@ int main(int argc, char* argv[])
 	{
 		for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
 		{
-			//DOG[i] =  GAU[i] - GAU[i+1]
+			//DOG[i] = GAU[i] - GAU[i+1]
 
 			if ((vxSubtractNode(graph, tem1[(i*(OCTAVE_LAYERS - 1)) + j], tem2[(i*(OCTAVE_LAYERS - 1)) + j],
 				VX_CONVERT_POLICY_WRAP, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0) {
@@ -231,6 +239,9 @@ int main(int argc, char* argv[])
 
 		}
 	}
+
+	
+
 	printf("DOG COMPLETE\n");
 
 	for (int i = 0; i < OCTAVE_NUM; i++)
@@ -246,10 +257,24 @@ int main(int argc, char* argv[])
 	
 
 	//own module
+	/*
 	printf("befroe SIFTNODE\n");
-	vxFindSiftKeypointNode(graph, onedog[0], onedog[1], onedog[2], keypointarr);
+	for (int i = 0; i < OCTAVE_NUM; i++)
+	{
+		for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
+		{
+			//vxFindSiftKeypointNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], keypointarr);
+
+		}
+	}
+	*/
+	//vxFindSiftKeypointNode(graph, DOG_pyra[0], DOG_pyra[1], DOG_pyra[2], 1, keypointarr);
+	vxFindSiftKeypointNode(graph, DOG_pyra[4], DOG_pyra[5], DOG_pyra[6], 2, keypointarr);
+	//vxFindSiftKeypointNode(graph, DOG_pyra[8], DOG_pyra[9], DOG_pyra[10], 3, keypointarr);
+	//vxFindSiftKeypointNode(graph, DOG_pyra[12], DOG_pyra[13], DOG_pyra[14], 4, keypointarr);
+	//vxFindSiftKeypointNode(graph, DOG_pyra[16], DOG_pyra[17], DOG_pyra[18], 5, keypointarr);
 	printf("after SIFTNODE\n");
-	     
+
 	// Running graph we created.
 	vx_status final_status = vxVerifyGraph(graph);
 	if (final_status == VX_SUCCESS)
@@ -260,34 +285,60 @@ int main(int argc, char* argv[])
 
 	printf("PROCESS GRAPH COMPLETE\n");
 
-	vx_size i, stride;
-	vx_coordinates2d_t *base = NULL;
+
+	
+
+
+	//check own node
+
+	vx_size i, stride = 0ul;
+	void* base = 0;
+
 	
 	vx_size num_items;
 	vx_size item_size;
 	vxQueryArray(keypointarr, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
 	vxQueryArray(keypointarr, VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
 	printf("<%d %d>\n", num_items, item_size);
-
 	printf("before access\n");
-	vx_status st = vxAccessArrayRange(keypointarr, (vx_size)0, (vx_size)3, &stride, (void**)&base, VX_READ_ONLY);
-
+	vx_status st = vxAccessArrayRange(keypointarr, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
 	printf("%d, VX_SUCCESS %d\n", (int)st, (int)VX_SUCCESS);
-
 	printf("after access\n");
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < num_items; i++)
 	{
 		vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
 		printf("x : %d ", xp->x);
 		printf("y : %d\n", xp->y);
 	}
 	printf("before commit\n");
-	vxCommitArrayRange(keypointarr, 0, 1000, base);
+	vxCommitArrayRange(keypointarr, 0, num_items, base);
 	printf("after commit\n");
+
+	/*
+	vxQueryArray(keypointarr2, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+	vxQueryArray(keypointarr2, VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
+	printf("<%d %d>\n", num_items, item_size);
+	printf("before access\n");
+	vx_status st2 = vxAccessArrayRange(keypointarr2, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
+	printf("%d, VX_SUCCESS %d\n", (int)st, (int)VX_SUCCESS);
+	printf("after access\n");
+	for (i = 0; i < num_items; i++)
+	{
+		vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
+		printf("x : %d ", xp->x);
+		printf("y : %d\n", xp->y);
+	}
+	printf("before commit\n");
+	vxCommitArrayRange(keypointarr2, 0, num_items, base);
+	printf("after commit\n");
+	*/
+
+
 
 	//=========saving images for checking purpose===========
 
 	/*
+
 
 	//save Gaussian Pyramid images as pgm
 	for (int i = 0; i < OCTAVE_NUM; i++)
@@ -298,7 +349,7 @@ int main(int argc, char* argv[])
 			saveimage(ingn, &gau_pyra[(i*OCTAVE_LAYERS) + j]);
 		}
 
-
+	
 	//save DOG Pyramid images as pgm
 
 
