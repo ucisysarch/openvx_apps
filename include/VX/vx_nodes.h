@@ -639,6 +639,7 @@ VX_API_ENTRY vx_node VX_API_CALL vxHalfScaleGaussianNode(vx_graph graph, vx_imag
 * \param [in] prev The input <tt>\ref VX_DF_IMAGE_S16</tt> image, previous layer.
 * \param [in] curr The input <tt>\ref VX_DF_IMAGE_S16</tt> image, current layer.
 * \param [in] next The input <tt>\ref VX_DF_IMAGE_S16</tt> image, next layer.
+* \param [in] octave The input <tt>\ref VX_INT32</tt> octave, index of that octave containing 3 given layers.
 * \param [out] arr will contain recently found keypoint. 1 keypoint.
 * \ingroup group_kernel_findingsift
 * \return <tt>\ref vx_node</tt>.
@@ -646,7 +647,7 @@ VX_API_ENTRY vx_node VX_API_CALL vxHalfScaleGaussianNode(vx_graph graph, vx_imag
 * \retval * Node handle.
 */
 VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image prev, vx_image curr, vx_image next,
-	vx_array arr);
+	vx_int32 octave, vx_array arr);
 
 #ifdef __cplusplus
 }

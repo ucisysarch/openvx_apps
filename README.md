@@ -8,4 +8,4 @@ include : header files
 lib : static .lib files
 
 --------------
-Own module 'findSiftKeypointNode' is a testing code yet. This just add 3 2d points into vx_array passed as parameter to be printed out on console.
+Own module 'findSiftKeypointNode' is a testing code yet. Took 3 vx_image as inputs and write to their local maxima/minima point into 'www.txt'. Other parameters vx_array and vx_int32 still not implemented.
