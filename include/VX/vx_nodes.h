@@ -636,9 +636,7 @@ VX_API_ENTRY vx_node VX_API_CALL vxHalfScaleGaussianNode(vx_graph graph, vx_imag
 /*! \brief [Graph] Pick keypoints using SIFT feature algorithms.
 * \details will add keypoint (x, y, o, scale) to keypointarr.
 * \param [in] graph The reference to the graph.
-* \param [in] prev The input <tt>\ref VX_DF_IMAGE_S16</tt> image, previous layer.
-* \param [in] curr The input <tt>\ref VX_DF_IMAGE_S16</tt> image, current layer.
-* \param [in] next The input <tt>\ref VX_DF_IMAGE_S16</tt> image, next layer.
+* \param [in] img_octave The input <tt>\ref VX_DF_IMAGE_S16</tt> image arrat pointer
 * \param [in] octave The input <tt>\ref VX_INT32</tt> octave, index of that octave containing 3 given layers.
 * \param [out] arr will contain recently found keypoint. 1 keypoint.
 * \ingroup group_kernel_findingsift

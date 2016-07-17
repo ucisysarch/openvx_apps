@@ -588,9 +588,7 @@ VX_API_ENTRY vx_status VX_API_CALL vxuRemap(vx_context context,
 
 /*! \brief [Immediate] Pick keypoints using SIFT feature algorithms.
 * \param [in] context The reference to the overall context.
-* \param [in] prev The input <tt>\ref VX_DF_IMAGE_S16</tt> image, previous layer.
-* \param [in] curr The input <tt>\ref VX_DF_IMAGE_S16</tt> image, current layer.
-* \param [in] next The input <tt>\ref VX_DF_IMAGE_S16</tt> image, next layer.
+* \param [in] img_octave The input <tt>\ref VX_DF_IMAGE_S16</tt> image arrat pointer
 * \param [in] octave The input <tt>\ref VX_INT32</tt> octave, index of that octave containing 3 given layers.
 * \param [out] arr will contain recently found keypoint. 1 keypoint.
 * \return A <tt>\ref vx_status_e</tt> enumeration.

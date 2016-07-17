@@ -48,9 +48,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vx_scalar octave = (vx_scalar)parameters[3];
 		vx_array arr = (vx_array)parameters[4];
 
-		vx_coordinates2d_t a1;
-		vx_coordinates2d_t a2;
-		vx_coordinates2d_t a3;
+		vx_coordinates2d_t foundKey;
 
 		//patch for access vx_image curr
 		vx_rectangle_t curr_imrect;
@@ -82,6 +80,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		int r, c;
 		vx_int32 o;
 
+
 		//=================BEGIN. assume we're using same size of vx_images as paramters
 		vx_uint32 w, h;	//images' width&height
 		vxQueryImage(curr, VX_IMAGE_ATTRIBUTE_WIDTH, &w, sizeof(w));
@@ -94,6 +93,9 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		prev_imrect.end_x = w; prev_imrect.end_y = h;
 		next_imrect.start_x = next_imrect.start_y = 0;
 		next_imrect.end_x = w; next_imrect.end_y = h;
+
+
+		vxAccessScalarValue(octave, &o);
 
 		fprintf(fff, "w : %d, h : %d\n", w, h);
 
@@ -175,7 +177,13 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 				{
 					//if we found maxima/minima, save the position
 					r = y; c = x;
-					fprintf(fff, "keypoint [%d, %d]\n", c, r);
+					r = r*(1 << o);
+					c = c*(1 << o);
+					foundKey.x = (vx_uint32)c;
+					foundKey.y = (vx_uint32)r;
+					vxAddArrayItems(arr, 1, &foundKey, 0);
+
+					fprintf(fff, "[%d %d]\n", c, r);
 				}
 				
 				//fprintf(fff, "%c", (*ptr2));
@@ -192,7 +200,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		//commit next layer
 		vxCommitImagePatch(next, &next_imrect, next_plane, &next_imaddr, next_imbaseptr);
 
-		vxAccessScalarValue(octave, &o);
+		//vxAccessScalarValue(octave, &o);
 		//fprintf(fff, "received %d as octave\n", o);
 
 		fclose(fff);
@@ -200,7 +208,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 
 	
 
-		
+		/*
 		a1.x = (vx_uint32)111;
 		a1.y = (vx_uint32)333;
 		a2.x = (vx_uint32)2222;
@@ -211,7 +219,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vxAddArrayItems(arr, 1, &a1, 0);
 		vxAddArrayItems(arr, 1, &a2, 0);
 		vxAddArrayItems(arr, 1, &a3, 0);
-		//
+		*/
 
 		//기존 모듈 같았더라면 이 위치에 return vxFindSiftKeypoint(vx_image*, vx_array) 가 들어갈 것이다.
 
