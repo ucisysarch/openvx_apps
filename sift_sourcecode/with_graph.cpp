@@ -157,15 +157,17 @@ int main(int argc, char* argv[])
 	vx_scalar scalar2 = vxCreateScalar(context, VX_TYPE_INT32, (void *)&zero2);
 
 	//this is for output of DOG pyramid images for test.
+	/*
 	vx_image onedog[OCTAVE_NUM*(OCTAVE_LAYERS - 1)];
 	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
 		onedog[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
+	*/
+	//several vx_array has itself responsiblity for one node function
+	//containing 2d keypoints
+	vx_array keypt_arr[OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)];
+	for (int i = 0; i < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); i++)
+		keypt_arr[i] = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
 
-	vx_array keypointarr = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
-	//vx_array keypointarr2 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
-	//vx_array keypointarr3 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
-	//vx_array keypointarr4 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
-	//vx_array keypointarr5 = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
 
 	//================================================================================================
 	//========================================== CREATING NODES ======================================
@@ -242,37 +244,37 @@ int main(int argc, char* argv[])
 
 	
 
-	printf("DOG COMPLETE\n");
+	//converting DOG to 8 unsigned for saving test. 
+	//printf("DOG COMPLETE\n");
 
-	for (int i = 0; i < OCTAVE_NUM; i++)
-	{
-		for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
-			if ((vxConvertDepthNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], onedog[(i*(OCTAVE_LAYERS - 1)) + j],
-				VX_CONVERT_POLICY_WRAP, scalar1)) == 0)
-				printf("-_-;;");
-		}
-	}
+	//for (int i = 0; i < OCTAVE_NUM; i++)
+	//{
+	//	for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
+	//		if ((vxConvertDepthNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], onedog[(i*(OCTAVE_LAYERS - 1)) + j],
+	//			VX_CONVERT_POLICY_WRAP, scalar1)) == 0)
+	//			printf("-_-;;");
+	//	}
+	//}
 
 
 	
 
 	//own module
-	/*
 	printf("befroe SIFTNODE\n");
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
-		for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
+		for (int j = 0; j < (OCTAVE_LAYERS - 1 - 2); j++)
 		{
-			//vxFindSiftKeypointNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], keypointarr);
+			printf("DOG [%d] [%d] [%d] (octave %d) => keypt_arr[%d]\n",
+				(i*(OCTAVE_LAYERS - 1)) + j, (i*(OCTAVE_LAYERS - 1)) + j + 1, (i*(OCTAVE_LAYERS - 1)) + j + 2, i,
+				(i*(OCTAVE_LAYERS - 1-2)) + j);
+
+			vxFindSiftKeypointNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], i, 
+				keypt_arr[(i*(OCTAVE_LAYERS-1-2) + j)]);
 
 		}
 	}
-	*/
-	//vxFindSiftKeypointNode(graph, DOG_pyra[0], DOG_pyra[1], DOG_pyra[2], 1, keypointarr);
-	vxFindSiftKeypointNode(graph, DOG_pyra[4], DOG_pyra[5], DOG_pyra[6], 2, keypointarr);
-	//vxFindSiftKeypointNode(graph, DOG_pyra[8], DOG_pyra[9], DOG_pyra[10], 3, keypointarr);
-	//vxFindSiftKeypointNode(graph, DOG_pyra[12], DOG_pyra[13], DOG_pyra[14], 4, keypointarr);
-	//vxFindSiftKeypointNode(graph, DOG_pyra[16], DOG_pyra[17], DOG_pyra[18], 5, keypointarr);
+
 	printf("after SIFTNODE\n");
 
 	// Running graph we created.
@@ -297,11 +299,11 @@ int main(int argc, char* argv[])
 	
 	vx_size num_items;
 	vx_size item_size;
-	vxQueryArray(keypointarr, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
-	vxQueryArray(keypointarr, VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
+	vxQueryArray(keypt_arr[8], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+	vxQueryArray(keypt_arr[8], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
 	printf("<%d %d>\n", num_items, item_size);
 	printf("before access\n");
-	vx_status st = vxAccessArrayRange(keypointarr, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
+	vx_status st = vxAccessArrayRange(keypt_arr[8], (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
 	printf("%d, VX_SUCCESS %d\n", (int)st, (int)VX_SUCCESS);
 	printf("after access\n");
 	for (i = 0; i < num_items; i++)
@@ -311,27 +313,10 @@ int main(int argc, char* argv[])
 		printf("y : %d\n", xp->y);
 	}
 	printf("before commit\n");
-	vxCommitArrayRange(keypointarr, 0, num_items, base);
+	vxCommitArrayRange(keypt_arr[8], 0, num_items, base);
 	printf("after commit\n");
 
-	/*
-	vxQueryArray(keypointarr2, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
-	vxQueryArray(keypointarr2, VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
-	printf("<%d %d>\n", num_items, item_size);
-	printf("before access\n");
-	vx_status st2 = vxAccessArrayRange(keypointarr2, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
-	printf("%d, VX_SUCCESS %d\n", (int)st, (int)VX_SUCCESS);
-	printf("after access\n");
-	for (i = 0; i < num_items; i++)
-	{
-		vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
-		printf("x : %d ", xp->x);
-		printf("y : %d\n", xp->y);
-	}
-	printf("before commit\n");
-	vxCommitArrayRange(keypointarr2, 0, num_items, base);
-	printf("after commit\n");
-	*/
+	
 
 
 
@@ -378,12 +363,16 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < OCTAVE_LAYERS*OCTAVE_NUM; i++)
 		vxReleaseImage(&gau_pyra[i]);
+	
+	for (int i = 0; i < (OCTAVE_LAYERS - 1 - 2)*OCTAVE_NUM; i++)
+		vxReleaseArray(&keypt_arr[i]);
+
 	for (int i = 0; i < (OCTAVE_LAYERS - 1)*OCTAVE_NUM; i++)
 	{
 		vxReleaseImage(&tem1[i]);
 		vxReleaseImage(&tem2[i]);
 		vxReleaseImage(&DOG_pyra[i]);
-		vxReleaseImage(&onedog[i]);
+		//vxReleaseImage(&onedog[i]);
 	}
 
 	vxReleaseGraph(&graph);
