@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
     if (num == 5)
@@ -175,20 +176,30 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 					&& ((*currpixel) <= (*next_neighbors[7])) && ((*currpixel) <= (*next_neighbors[8])))
 					)
 				{
-					//if we found maxima/minima, save the position
-					r = y; c = x;
-					r = r*(1 << o);
-					c = c*(1 << o);
-					foundKey.x = (vx_uint32)c;
-					foundKey.y = (vx_uint32)r;
-					vxAddArrayItems(arr, 1, &foundKey, 0);
+					vx_int16 d = *currpixel;
+					vx_float32 dxx = (*curr_neighbors[2]) + (*curr_neighbors[6]) - 2 * d;
+					vx_float32 dyy = (*curr_neighbors[0]) + (*curr_neighbors[4]) - 2 * d;
+					vx_float32 dxy = ((*curr_neighbors[1]) - (*curr_neighbors[3]) - (*curr_neighbors[5]) - (*curr_neighbors[7])) / 4.0;
 
-					fprintf(fff, "[%d %d]\n", c, r);
+					vx_float32 tr = dxx + dyy;
+					vx_float32 det = dxx * dyy - dxy * dxy;
+					//is edge?
+					if (det > 0 && tr * tr / det < (10 + 1.0)*(10 + 1.0) / 10)
+					{
+						r = y; c = x;
+						r = r*(1 << o);
+						c = c*(1 << o);
+						foundKey.x = (vx_uint32)c;
+						foundKey.y = (vx_uint32)r;
+						vxAddArrayItems(arr, 1, &foundKey, 0);
+
+						fprintf(fff, "[%d %d]\n", c, r);
+						//std::cout << "edge" << std::endl;
+					}
+					//if we found maxima/minima, save the position
 				}
-				
 				//fprintf(fff, "%c", (*ptr2));
 			}
-
 		}
 
 		//fprintf(fff, ">");
