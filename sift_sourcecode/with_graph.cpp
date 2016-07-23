@@ -105,20 +105,18 @@ static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 n
 	return conv;
 }
 
-
 //Make 'imgname.png' from given vx_image.
 void saveimage(char* imgname, vx_image* img)
 {
 	//write-only
 	FILE* outf = fopen(imgname, "wb");
-	//vx_uint8* bytes = (vx_uint8*)malloc(sizeof(vx_uint8)*w*h);
 
 	//pgm file contains width, height value itself.
 	vx_uint32 w, h;
 	vxQueryImage((*img), VX_IMAGE_ATTRIBUTE_WIDTH, &w, sizeof(w));
 	vxQueryImage((*img), VX_IMAGE_ATTRIBUTE_HEIGHT, &h, sizeof(h));
 	printf("%s %d %d>>>>\n", imgname, w, h);
-
+	
 	//Set patch we are going to access from (0,0) to (width, height). This stands for entire image.
 	vx_rectangle_t imrect;
 	imrect.start_x = imrect.start_y = 0;
@@ -127,7 +125,7 @@ void saveimage(char* imgname, vx_image* img)
 	vx_imagepatch_addressing_t imaddr;
 	void* imbaseptr = NULL;
 
-	if (vxAccessImagePatch((*img), &imrect, plane, &imaddr, &imbaseptr, VX_READ_AND_WRITE) != VX_SUCCESS)
+	if (vxAccessImagePatch((*img), &imrect, plane, &imaddr, &imbaseptr, VX_READ_ONLY) != VX_SUCCESS)
 		printf("access failed\n");
 
 
@@ -145,6 +143,8 @@ void saveimage(char* imgname, vx_image* img)
 		}
 
 	}
+
+	vxCommitImagePatch((*img), &imrect, plane, &imaddr, imbaseptr);
 
 	fclose(outf);
 }
@@ -174,20 +174,20 @@ int main(int argc, char* argv[])
 		for (int x = 0; x<width; x++)
 			fscanf(in, "%c", &bytes[(y*width) + x]);
 
-
+	
 
 	//Image reference for loading external image onto vximage
 	vx_imagepatch_addressing_t addrs[] = {
-			{
-				width,
-				height,
-				sizeof(vx_uint8),
-				width * sizeof(vx_uint8),
-				VX_SCALE_UNITY,
-				VX_SCALE_UNITY,
-				1,
-				1
-			}
+		{
+			width,
+			height,
+			sizeof(vx_uint8),
+			width * sizeof(vx_uint8),
+			VX_SCALE_UNITY,
+			VX_SCALE_UNITY,
+			1,
+			1
+		}
 	};
 
 	//wrap bytes as void*
@@ -205,6 +205,7 @@ int main(int argc, char* argv[])
 		data,
 		VX_IMPORT_TYPE_HOST);
 
+
 	//convolution values for gaussian blur
 	vx_convolution conv5x5 = vxCreateGaussianConvolution(context, 5);
 	vx_convolution conv7x7 = vxCreateGaussianConvolution(context, 7);
@@ -212,33 +213,29 @@ int main(int argc, char* argv[])
 	vx_convolution conv11x11 = vxCreateGaussianConvolution(context, 11);
 
 	//Create graph for context declared above
-
-
-
 	vx_graph graph = vxCreateGraph(context);
-
-
-
 
 
 	//=========================================================================================================
 	//========================================== CREATING VIRTUAL IMAGES ======================================
 	//=========================================================================================================
 
+	//X gradient and Y gradient and magnitude of original images. Must be signed 16 bits images
+	vx_image x_grad = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
+	vx_image y_grad = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
+	vx_image mag = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
+
+	//for test gradient image! soon will be eliminated
+	/*
+	vx_image x_grad_test = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
+	vx_image y_grad_test = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
+	vx_image mag_test = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
+	*/
+
 	//Gaussian Pyramid
 	vx_image gau_pyra[OCTAVE_NUM*OCTAVE_LAYERS];
 	for (int i = 0; i < (OCTAVE_LAYERS*OCTAVE_NUM); i++)
 		gau_pyra[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
-
-	//Temporary image to contain converted U8 Gaussian pyramid into as S16.
-	//ex) DOG[a] = tem[a] - tem[b]
-	vx_image tem1[OCTAVE_NUM*(OCTAVE_LAYERS - 1)];
-	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
-		tem1[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
-
-	vx_image tem2[OCTAVE_NUM*(OCTAVE_LAYERS - 1)];
-	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
-		tem2[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
 
 
 	//DOG Pyramid. Subtraction will cause negative output value so that we should prepare signed bit image.
@@ -246,12 +243,6 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
 		DOG_pyra[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
 
-	// 3 layers of DOG for input parameters in findSiftKeypointNode.
-	/*
-	vx_image DOG_inputs[(OCTAVE_LAYERS - 1 - 2) * 3 * OCTAVE_NUM];
-	for (int i = 0; i < ((OCTAVE_LAYERS - 1 - 2) * 3 * OCTAVE_NUM); i++)
-	DOG_inputs[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
-	*/
 
 	//Create pyramid for basis of gaussian pyramid we're going to build. Only U8 is allowed.
 	vx_pyramid pyra = vxCreateVirtualPyramid(graph, OCTAVE_NUM, VX_SCALE_PYRAMID_HALF, width, height, VX_DF_IMAGE_U8);
@@ -261,6 +252,7 @@ int main(int argc, char* argv[])
 	vx_int32 zero1 = 0;
 	vx_int32 zero2 = 0;
 
+
 	vx_scalar scalar1 = vxCreateScalar(context, VX_TYPE_INT32, (void *)&zero1);
 	vx_scalar scalar2 = vxCreateScalar(context, VX_TYPE_INT32, (void *)&zero2);
 
@@ -268,18 +260,31 @@ int main(int argc, char* argv[])
 	/*
 	vx_image onedog[OCTAVE_NUM*(OCTAVE_LAYERS - 1)];
 	for (int i = 0; i < ((OCTAVE_LAYERS - 1)*OCTAVE_NUM); i++)
-	onedog[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
+		onedog[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
 	*/
 	//several vx_array has itself responsiblity for one node function
 	//containing 2d keypoints
 	vx_array keypt_arr[OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)];
+	vx_image keypoint_img[OCTAVE_NUM*(OCTAVE_LAYERS - 1 - 2)];
+	vx_uint8 bp = 0;
+
 	for (int i = 0; i < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); i++)
+	{
 		keypt_arr[i] = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
+		keypoint_img[i] = vxCreateVirtualImage(graph, width, height, VX_DF_IMAGE_U8);
+	}
+
 
 
 	//================================================================================================
 	//========================================== CREATING NODES ======================================
 	//================================================================================================
+
+	if (vxSobel3x3Node(graph, image, x_grad, y_grad) == 0) printf("ERROR SOBEL NODE\n");
+	else printf("GETTING GRADIENTS BY SOBEL COMPLETE!\n");
+
+	if (vxMagnitudeNode(graph, x_grad, y_grad, mag) == 0) printf("ERROR MAGNITUDE NODE\n");
+	else printf("GETTING MAGNITUDE FROM GRADIENTS COMPLETE!\n");
 
 	if (vxGaussianPyramidNode(graph, image, pyra) == 0) printf("ERROR GAUSSIANPYRAMID\n");
 	else printf("GAUSSIAN PYRAMID COMPLETE!\n");
@@ -321,76 +326,38 @@ int main(int argc, char* argv[])
 				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv9x9, tempimage);
 
 			vxConvertDepthNode(graph, tempimage, gau_pyra[(i*OCTAVE_LAYERS) + j], VX_CONVERT_POLICY_WRAP, scalar1);
-			//vxGaussian3x3Node(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], gau_pyra[(i*OCTAVE_LAYERS) + j]);
+
+			
 		}
 
 	}
 
-	//using absdiffnode can save memory
-	//just think about the maximum value.
+
+	//===== SUBTRACT TWO GAUSSIAN IMAGES WITH ABSDIFF TO BUILD DOG PYRAMID =====//
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
 		for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
 		{
 			//DOG[i] = GAU[i] - GAU[i+1]
 
-			if ((vxAbsDiffNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + j], gau_pyra[(i*OCTAVE_LAYERS) + (j + 1)], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0)
-			{
+			if ((vxSubtractNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + j], gau_pyra[(i*OCTAVE_LAYERS) + (j + 1)],
+				VX_CONVERT_POLICY_WRAP, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0) {
 				printf("subtraction failed\n");
 				return 0;
 			}
-
 		}
 	}
 
-	//===== CONVERTING U8 GAUSSIAN PYRAMID IMAGES TO S16 FOR SUBTRACTION =====//
-	/*for (int i = 0; i < OCTAVE_NUM; i++)
-	{
-	for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
-	{
-	if ((vxConvertDepthNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + j], tem1[(i*(OCTAVE_LAYERS - 1)) + j], VX_CONVERT_POLICY_SATURATE, scalar1)) == 0) {
-	printf("convert tem1 failed\n");
-	return 0;
-	}
-
-	if ((vxConvertDepthNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j + 1)], tem2[(i*(OCTAVE_LAYERS - 1)) + j], VX_CONVERT_POLICY_SATURATE, scalar2)) == 0) {
-	printf("convert tem2 failed\n");
-	return 0;
-	}
-	}
-	}
 
 
-	//===== GENERATING DOG PYRAMID USING SUBTRACTION =====//
-	for (int i = 0; i < OCTAVE_NUM; i++)
-	{
-	for (int j = 0; j < OCTAVE_LAYERS - 1; j++)
-	{
-	//DOG[i] = GAU[i] - GAU[i+1]
+	//to print out gradient images
+	/*
+	vxConvertDepthNode(graph, x_grad, x_grad_test, VX_CONVERT_POLICY_WRAP, scalar1);
+	vxConvertDepthNode(graph, y_grad, y_grad_test, VX_CONVERT_POLICY_WRAP, scalar1);
+	vxConvertDepthNode(graph, mag, mag_test, VX_CONVERT_POLICY_WRAP, scalar1);
+	*/
 
-	if ((vxSubtractNode(graph, tem1[(i*(OCTAVE_LAYERS - 1)) + j], tem2[(i*(OCTAVE_LAYERS - 1)) + j],
-	VX_CONVERT_POLICY_WRAP, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0) {
-	printf("subtraction failed\n");
-	return 0;
-	}
-
-	}
-	}*/
-
-
-
-	//converting DOG to 8 unsigned for saving test. 
-	//printf("DOG COMPLETE\n");
-
-	//for (int i = 0; i < OCTAVE_NUM; i++)
-	//{
-	//	for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
-	//		if ((vxConvertDepthNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], onedog[(i*(OCTAVE_LAYERS - 1)) + j],
-	//			VX_CONVERT_POLICY_WRAP, scalar1)) == 0)
-	//			printf("-_-;;");
-	//	}
-	//}
-
+	
 
 	//own module
 	printf("befroe SIFTNODE\n");
@@ -400,13 +367,27 @@ int main(int argc, char* argv[])
 		{
 			printf("DOG [%d] [%d] [%d] (octave %d) => keypt_arr[%d]\n",
 				(i*(OCTAVE_LAYERS - 1)) + j, (i*(OCTAVE_LAYERS - 1)) + j + 1, (i*(OCTAVE_LAYERS - 1)) + j + 2, i,
-				(i*(OCTAVE_LAYERS - 1 - 2)) + j);
+				(i*(OCTAVE_LAYERS - 1-2)) + j);
 
-			vxFindSiftKeypointNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], i,
-				keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)]);
+			
+			if( (vxFindSiftKeypointNode(graph, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], i, 
+				keypt_arr[(i*(OCTAVE_LAYERS-1-2) + j)])) == 0)
+				printf("FINDSIFTKEYPOINT NODE FAILED\n");
+			
+			
+			if ((vxVerifyKeypointNode(graph, keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], mag, width, height, keypoint_img[(i*(OCTAVE_LAYERS - 1 - 2)) + j])) == 0)
+				printf("VERIFYKEYPOINT NODE FAILED\n");
+			
 
 		}
 	}
+
+
+	
+
+	//vxVerifyKeypointNode(graph, keypt_arr[0], mag, new_keypt_arr[0]);
+	
+	
 
 	printf("after SIFTNODE\n");
 
@@ -423,20 +404,32 @@ int main(int argc, char* argv[])
 
 
 
+	//checking a keypoint array for debugging
+	vx_size num_items;
+	vx_size item_size;
+	vxQueryArray(keypt_arr[0], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+	vxQueryArray(keypt_arr[0], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
+	printf("[ %d %d ]\n", num_items, item_size);
+	//vxQueryArray(new_keypt_arr[0], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+	//vxQueryArray(new_keypt_arr[0], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
+	//printf("[ %d %d ]\n", num_items, item_size);
+
 
 	//check own node
+	/*
+	
 
 	vx_size i, stride = 0ul;
 	void* base = 0;
 
-
+	
 	vx_size num_items;
 	vx_size item_size;
-	vxQueryArray(keypt_arr[8], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
-	vxQueryArray(keypt_arr[8], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
+	vxQueryArray(keypt_arr[7], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+	vxQueryArray(keypt_arr[7], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
 	printf("<%d %d>\n", num_items, item_size);
 	printf("before access\n");
-	vx_status st = vxAccessArrayRange(keypt_arr[8], (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
+	vx_status st = vxAccessArrayRange(keypt_arr[7], (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
 	printf("%d, VX_SUCCESS %d\n", (int)st, (int)VX_SUCCESS);
 	printf("after access\n");
 	for (i = 0; i < num_items; i++)
@@ -446,61 +439,91 @@ int main(int argc, char* argv[])
 		printf("y : %d\n", xp->y);
 	}
 	printf("before commit\n");
-	vxCommitArrayRange(keypt_arr[8], 0, num_items, base);
+	vxCommitArrayRange(keypt_arr[7], 0, num_items, base);
 	printf("after commit\n");
+
+	*/
+	
+	
+
 
 	//=========saving images for checking purpose===========
 
+	//saveimage("x_grad.pgm", &x_grad_test);
+	//saveimage("y_grad.pgm", &y_grad_test);
+	//saveimage("mag.pgm", &mag_test);
 
-
-
+	/*
 	//save Gaussian Pyramid images as pgm
-	/*for (int i = 0; i < OCTAVE_NUM; i++)
-	for (int j = 0; j < OCTAVE_LAYERS; j++)
-	{
-	char ingn[64] = { 0, };
-	sprintf(ingn, "%d-%d.pgm", i, j);
-	saveimage(ingn, &gau_pyra[(i*OCTAVE_LAYERS) + j]);
-	}
+	for (int i = 0; i < OCTAVE_NUM; i++)
+		for (int j = 0; j < OCTAVE_LAYERS; j++)
+		{
+			char ingn[64] = { 0, };
+			sprintf(ingn, "%d-%d.pgm", i, j);
+			saveimage(ingn, &gau_pyra[(i*OCTAVE_LAYERS) + j]);
+		}
 
-
-	//save DOG Pyramid images as pgm
-
-
+	*/
+	
+	//save keypoint images as pgm
+	
+	/*
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
-	for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
-	char ingn[64] = { 0, };
-	sprintf(ingn, "DOG_%d-%d.pgm", i, j);
-	//vx_image* temar = (vx_image*)DOGREF;
-	//saveimage(ingn, &temar[(i*(OCTAVE_LAYERS - 1)) + j]);
-	saveimage(ingn, &DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j]);
-	}
+		for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
+			char ingn[64] = { 0, };
+			sprintf(ingn, "KEYP_%d-%d.pgm", i, j);
+			saveimage(ingn, &keypoint_img[(i*(OCTAVE_LAYERS - 1)) + j]);
+			//saveimage(ingn, &onedog[(i*(OCTAVE_LAYERS - 1)) + j]);
+		}
 	}
 	*/
+	
+	//save DOG Pyramid images as pgm
+
+	
+	//for (int i = 0; i < OCTAVE_NUM; i++)
+	//{
+	//	for (int j = 0; j < OCTAVE_LAYERS - 1; j++) {
+	//		char ingn[64] = { 0, };
+	//		sprintf(ingn, "DOG_%d-%d.pgm", i, j);
+	//		saveimage(ingn, &DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j]);
+	//		//saveimage(ingn, &onedog[(i*(OCTAVE_LAYERS - 1)) + j]);
+	//	}
+	//}
+	
 
 	fclose(in);
 
 
+
 	//release data strutures created
-
-
 	vxReleaseScalar(&scalar1);
 	vxReleaseScalar(&scalar2);
 
 	for (int i = 0; i < OCTAVE_LAYERS*OCTAVE_NUM; i++)
 		vxReleaseImage(&gau_pyra[i]);
-
+	
 	for (int i = 0; i < (OCTAVE_LAYERS - 1 - 2)*OCTAVE_NUM; i++)
+	{
 		vxReleaseArray(&keypt_arr[i]);
+		//vxReleaseArray(&new_keypt_arr[i]);
+	}
+
 
 	for (int i = 0; i < (OCTAVE_LAYERS - 1)*OCTAVE_NUM; i++)
 	{
-		vxReleaseImage(&tem1[i]);
-		vxReleaseImage(&tem2[i]);
 		vxReleaseImage(&DOG_pyra[i]);
+		//vxReleaseImage(&keypoint_img[i]);
 		//vxReleaseImage(&onedog[i]);
 	}
+
+	vxReleaseImage(&x_grad);
+	vxReleaseImage(&y_grad);
+	vxReleaseImage(&mag);
+	//vxReleaseImage(&x_grad_test);
+	//vxReleaseImage(&y_grad_test);
+	//vxReleaseImage(&mag_test);
 
 	vxReleaseGraph(&graph);
 	vxReleaseContext(&context);

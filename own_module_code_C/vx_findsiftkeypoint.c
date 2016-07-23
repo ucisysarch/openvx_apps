@@ -21,11 +21,6 @@
  * MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
  */
 
-/*!
- * \file
- * \brief The Filter Kernels.
- * \author Erik Rainey <erik.rainey@gmail.com>
- */
 
 #include <VX/vx.h>
 #include <VX/vxu.h>
@@ -36,7 +31,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
 
 static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
@@ -50,6 +44,27 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vx_array arr = (vx_array)parameters[4];
 
 		vx_coordinates2d_t foundKey;
+
+		//constants from original openCV SIFT code
+		/*
+		vx_int32 SIFT_FIXPT_SCALE = 48;
+		vx_float32 img_scale = 1.f / (255 * SIFT_FIXPT_SCALE);
+		vx_float32 deriv_scale = img_scale*0.5f;				//img_scale * 0.5
+		vx_float32 second_deriv_scale = img_scale;				//img_scale
+		vx_float32 cross_deriv_scale = img_scale*0.25f;			//img_scale * 0.25
+
+		//solution of matrix equation <xi, xr, xc>
+		//we have to find out those values
+		vx_float32 xi = 0.0f;
+		vx_float32 xr = 0.0f;
+		vx_float32 xc = 0.0f;
+
+		//3d dD vector, right side of matrix equation.
+		vx_float32 dD[3] = { 0.0f, };
+
+		//3*3 Hessian Matrix, left side of matrix equation
+		vx_float33 Hess[3][3] = { .0f, };
+		*/
 
 		//patch for access vx_image curr
 		vx_rectangle_t curr_imrect;
@@ -119,87 +134,79 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 			{
 
 				//currpixel : pixel we're looking as candidate. This one will be compared to neighboring..
-				vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y, &curr_imaddr);
+				vx_uint8* currpixel = (vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y, &curr_imaddr);
 				//fprintf(fff, "%d ", (*currpixel));
 
 				//neighboring 8 pixels on same layer(vx_image curr)
-				vx_int16* curr_neighbors[8] = {
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y + 1, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y + 1, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y + 1, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y - 1, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y - 1, &curr_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y - 1, &curr_imaddr)
+				vx_uint8* curr_neighbors[8] = {
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y + 1, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y + 1, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y + 1, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x - 1, y - 1, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x, y - 1, &curr_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(curr_imbaseptr, x + 1, y - 1, &curr_imaddr)
 				};
 				//9 pixels on lower layer(previous layer)
-				vx_int16 *prev_neighbors[9] = {
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y + 1, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y + 1, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y + 1, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y - 1, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y - 1, &prev_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y - 1, &prev_imaddr)
+				vx_uint8 *prev_neighbors[9] = {
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y + 1, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y + 1, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y + 1, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x - 1, y - 1, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x, y - 1, &prev_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(prev_imbaseptr, x + 1, y - 1, &prev_imaddr)
 				};
 				//9 pixels on upper layer(next layer)
-				vx_int16 *next_neighbors[9] = {
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y + 1, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y + 1, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y + 1, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y - 1, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y - 1, &next_imaddr),
-					(vx_int16 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y - 1, &next_imaddr)
+				vx_uint8 *next_neighbors[9] = {
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y + 1, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y + 1, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y + 1, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x - 1, y - 1, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x, y - 1, &next_imaddr),
+					(vx_uint8 *)vxFormatImagePatchAddress2d(next_imbaseptr, x + 1, y - 1, &next_imaddr)
 				};
 
 
 				if (
-					(((*currpixel) >= (*curr_neighbors[0])) && ((*currpixel) >= (*curr_neighbors[1])) && ((*currpixel) >= (*curr_neighbors[2])) && ((*currpixel) >= (*curr_neighbors[3]))
+					((*currpixel) >= (*curr_neighbors[0])) && ((*currpixel) >= (*curr_neighbors[1])) && ((*currpixel) >= (*curr_neighbors[2])) && ((*currpixel) >= (*curr_neighbors[3]))
 					&& ((*currpixel) >= (*curr_neighbors[4])) && ((*currpixel) >= (*curr_neighbors[5])) && ((*currpixel) >= (*curr_neighbors[6])) && ((*currpixel) >= (*curr_neighbors[7]))
 					&& ((*currpixel) >= (*prev_neighbors[0])) && ((*currpixel) >= (*prev_neighbors[1])) && ((*currpixel) >= (*prev_neighbors[2])) && ((*currpixel) >= (*prev_neighbors[3]))
 					&& ((*currpixel) >= (*prev_neighbors[4])) && ((*currpixel) >= (*prev_neighbors[5])) && ((*currpixel) >= (*prev_neighbors[6])) && ((*currpixel) >= (*prev_neighbors[7]))
 					&& ((*currpixel) >= (*prev_neighbors[8])) && ((*currpixel) >= (*next_neighbors[0])) && ((*currpixel) >= (*next_neighbors[1])) && ((*currpixel) >= (*next_neighbors[2]))
 					&& ((*currpixel) >= (*next_neighbors[3])) && ((*currpixel) >= (*next_neighbors[4])) && ((*currpixel) >= (*next_neighbors[5])) && ((*currpixel) >= (*next_neighbors[6]))
-					&& ((*currpixel) >= (*next_neighbors[7])) && ((*currpixel) >= (*next_neighbors[8]))) ||
-					(((*currpixel) <= (*curr_neighbors[0])) && ((*currpixel) <= (*curr_neighbors[1])) && ((*currpixel) <= (*curr_neighbors[2])) && ((*currpixel) <= (*curr_neighbors[3]))
-					&& ((*currpixel) <= (*curr_neighbors[4])) && ((*currpixel) <= (*curr_neighbors[5])) && ((*currpixel) <= (*curr_neighbors[6])) && ((*currpixel) <= (*curr_neighbors[7]))
-					&& ((*currpixel) <= (*prev_neighbors[0])) && ((*currpixel) <= (*prev_neighbors[1])) && ((*currpixel) <= (*prev_neighbors[2])) && ((*currpixel) <= (*prev_neighbors[3]))
-					&& ((*currpixel) <= (*prev_neighbors[4])) && ((*currpixel) <= (*prev_neighbors[5])) && ((*currpixel) <= (*prev_neighbors[6])) && ((*currpixel) <= (*prev_neighbors[7]))
-					&& ((*currpixel) <= (*prev_neighbors[8])) && ((*currpixel) <= (*next_neighbors[0])) && ((*currpixel) <= (*next_neighbors[1])) && ((*currpixel) <= (*next_neighbors[2]))
-					&& ((*currpixel) <= (*next_neighbors[3])) && ((*currpixel) <= (*next_neighbors[4])) && ((*currpixel) <= (*next_neighbors[5])) && ((*currpixel) <= (*next_neighbors[6]))
-					&& ((*currpixel) <= (*next_neighbors[7])) && ((*currpixel) <= (*next_neighbors[8])))
+					&& ((*currpixel) >= (*next_neighbors[7])) && ((*currpixel) >= (*next_neighbors[8]))
 					)
 				{
-					vx_int16 d = *currpixel;
-					vx_float32 dxx = (*curr_neighbors[2]) + (*curr_neighbors[6]) - 2 * d;
-					vx_float32 dyy = (*curr_neighbors[0]) + (*curr_neighbors[4]) - 2 * d;
-					vx_float32 dxy = ((*curr_neighbors[1]) - (*curr_neighbors[3]) - (*curr_neighbors[5]) - (*curr_neighbors[7])) / 4.0;
-
-					vx_float32 tr = dxx + dyy;
-					vx_float32 det = dxx * dyy - dxy * dxy;
-					//is edge?
-					if (det > 0 && tr * tr / det < (10 + 1.0)*(10 + 1.0) / 10)
-					{
-						r = y; c = x;
-						r = r*(1 << o);
-						c = c*(1 << o);
-						foundKey.x = (vx_uint32)c;
-						foundKey.y = (vx_uint32)r;
-						vxAddArrayItems(arr, 1, &foundKey, 0);
-
-						fprintf(fff, "[%d %d]\n", c, r);
-						//std::cout << "edge" << std::endl;
-					}
 					//if we found maxima/minima, save the position
+
+					//doing verification for good keypoint
+					/*
+					dD[0] = ((vx_float32)((*curr_neighbors[0]) - (*curr_neighbors[4])))*deriv_scale;		//x direction derivative
+					dD[1] = ((vx_float32)((*curr_neighbors[2]) - (*curr_neighbors[6])))*deriv_scale;		//y direction derivative
+					dD[2] = ((vx_float32)((*next_neighbors[0]) - (*prev_neighbors[0])))*deriv_scale;		//layer derivative
+
+					*/
+
+					r = y; c = x;
+					r = r*(1 << o);
+					c = c*(1 << o);
+					foundKey.x = (vx_uint32)c;
+					foundKey.y = (vx_uint32)r;
+					vxAddArrayItems(arr, 1, &foundKey, 0);
+
+					fprintf(fff, "[%d %d]\n", c, r);
 				}
+				
 				//fprintf(fff, "%c", (*ptr2));
 			}
+
 		}
 
 		//fprintf(fff, ">");
@@ -232,7 +239,6 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vxAddArrayItems(arr, 1, &a3, 0);
 		*/
 
-		//기존 모듈 같았더라면 이 위치에 return vxFindSiftKeypoint(vx_image*, vx_array) 가 들어갈 것이다.
 
 		return VX_SUCCESS;
     }

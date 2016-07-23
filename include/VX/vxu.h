@@ -598,6 +598,20 @@ VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_im
 	vx_int32 octave, vx_array arr);
 
 
+
+/*! \brief [Immediate] Pick keypoints using SIFT feature algorithms.
+* \param [in] context The reference to the overall context.
+* \param [in] array The input keypoints
+* \param [in] image The input x
+* \param [in] image The input y
+* \param [out] array2 recently verified keypoints
+* \return A <tt>\ref vx_status_e</tt> enumeration.
+* \ingroup group_verify_keypoint
+*/
+VX_API_ENTRY vx_status VX_API_CALL vxuVerifyKeypoint(vx_context context, vx_array before, vx_image mag, vx_int32 w, vx_int32 h, vx_image after);
+
+
+
 #ifdef __cplusplus
 }
 #endif
