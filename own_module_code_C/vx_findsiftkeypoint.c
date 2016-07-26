@@ -43,7 +43,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vx_scalar octave = (vx_scalar)parameters[3];
 		vx_array arr = (vx_array)parameters[4];
 
-		vx_coordinates2d_t foundKey;
+		vx_siftfeature foundKey;
 
 		//constants from original openCV SIFT code
 		/*
@@ -197,8 +197,9 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 					r = y; c = x;
 					r = r*(1 << o);
 					c = c*(1 << o);
-					foundKey.x = (vx_uint32)c;
-					foundKey.y = (vx_uint32)r;
+					 
+					foundKey.point.x = (vx_uint32)c;
+					foundKey.point.y = (vx_uint32)r;
 					vxAddArrayItems(arr, 1, &foundKey, 0);
 
 					fprintf(fff, "[%d %d]\n", c, r);

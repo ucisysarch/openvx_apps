@@ -263,14 +263,15 @@ int main(int argc, char* argv[])
 		onedog[i] = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_U8);
 	*/
 	//several vx_array has itself responsiblity for one node function
-	//containing 2d keypoints
+	//containing vx_siftfeature type array
+	vx_enum feature_type = vxRegisterUserStruct(context, sizeof(vx_siftfeature));
 	vx_array keypt_arr[OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)];
 	vx_image keypoint_img[OCTAVE_NUM*(OCTAVE_LAYERS - 1 - 2)];
 	vx_uint8 bp = 0;
 
 	for (int i = 0; i < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); i++)
 	{
-		keypt_arr[i] = vxCreateVirtualArray(graph, VX_TYPE_COORDINATES2D, (vx_size)1000);
+		keypt_arr[i] = vxCreateVirtualArray(graph, feature_type, (vx_size)1000);
 		keypoint_img[i] = vxCreateVirtualImage(graph, width, height, VX_DF_IMAGE_U8);
 	}
 
@@ -340,8 +341,9 @@ int main(int argc, char* argv[])
 		{
 			//DOG[i] = GAU[i] - GAU[i+1]
 
-			if ((vxSubtractNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + j], gau_pyra[(i*OCTAVE_LAYERS) + (j + 1)],
-				VX_CONVERT_POLICY_WRAP, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0) {
+			if ((vxAbsDiffNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + j], gau_pyra[(i*OCTAVE_LAYERS) + (j + 1)],
+				DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j])) == 0)
+			{
 				printf("subtraction failed\n");
 				return 0;
 			}
@@ -434,9 +436,9 @@ int main(int argc, char* argv[])
 	printf("after access\n");
 	for (i = 0; i < num_items; i++)
 	{
-		vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
-		printf("x : %d ", xp->x);
-		printf("y : %d\n", xp->y);
+		vx_siftfeature* xp = &vxArrayItem(vx_siftfeature, base, i, stride);
+		printf("x : %d ", xp->point.x);
+		printf("y : %d\n", xp->point.y);
 	}
 	printf("before commit\n");
 	vxCommitArrayRange(keypt_arr[7], 0, num_items, base);

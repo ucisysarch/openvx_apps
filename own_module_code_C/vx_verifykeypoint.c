@@ -113,18 +113,18 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 		for (i = 0; i < num_items; i++)
 		{
-			vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
+			vx_siftfeature* xp = &vxArrayItem(vx_siftfeature, base, i, stride);
 
-			vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(imbaseptr, xp->x, xp->y, &imaddr);
+			vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(imbaseptr, xp->point.x, xp->point.y, &imaddr);
 			
 			if ((*currpixel) >= MAGNITUDE_THRESHOLD)
 			{
-				fprintf(fff, "%d %d\n", xp->x, xp->y);
+				fprintf(fff, "%d %d\n", xp->point.x, xp->point.y);
 				//foundKey.x = (vx_uint32)xp->x;
 				//foundKey.y = (vx_uint32)xp->y;
 				//vxAddArrayItems(after_arr, 1, &foundKey, 0);
 
-				vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, xp->x, xp->y, &output_imaddr);
+				vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, xp->point.x, xp->point.y, &output_imaddr);
 				(*outputpixel) = (vx_uint8)255;
 			}
 

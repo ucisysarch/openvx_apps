@@ -1424,6 +1424,14 @@ typedef struct _vx_coordinates3d_t {
     vx_uint32 z;    /*!< \brief The Z coordinate. */
 } vx_coordinates3d_t;
 
+/*!\brief This structure is used to sift feature
+* \ingroup group_user_kernels
+*/
+typedef struct _vx_siftfeature{
+	vx_coordinates2d_t point; /*!< \brief The keypoint X,Y pos. */
+	vx_float32 orientation;   /*!< \brief The orientation of keypoint */
+	vx_int16 discriptor[128]; /*!< \brief The 128 array size discriptor of keypoint */
+} vx_siftfeature;
 /*! \brief The log callback function.
  * \ingroup group_log
  */
