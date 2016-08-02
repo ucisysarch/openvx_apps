@@ -595,7 +595,7 @@ VX_API_ENTRY vx_status VX_API_CALL vxuRemap(vx_context context,
 * \ingroup group_kernel_findingsift
 */
 VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_image prev, vx_image curr, vx_image next,
-	vx_int32 octave, vx_array arr);
+	vx_int32 octave, vx_int32 maximum, vx_array arr);
 
 
 
@@ -608,9 +608,19 @@ VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_im
 * \return A <tt>\ref vx_status_e</tt> enumeration.
 * \ingroup group_verify_keypoint
 */
-VX_API_ENTRY vx_status VX_API_CALL vxuVerifyKeypoint(vx_context context, vx_array before, vx_image mag, vx_int32 w, vx_int32 h, vx_image after);
+VX_API_ENTRY vx_status VX_API_CALL vxuVerifyKeypoint(vx_context context, vx_array before, vx_image mag, vx_int32 w, vx_int32 h, vx_int32 maximum, vx_array after, vx_image keyptimg);
 
 
+/*! \brief [Immediate] calculate descriptors using SIFT keypoints using phase of gardient
+* \param [in] context The reference to the overall context.
+* \param [in] array The input keypoints
+* \param [in] image The input x
+* \param [in] image The input y
+* \param [out] array2 recently verified keypoints
+* \return A <tt>\ref vx_status_e</tt> enumeration.
+* \ingroup group_calc_sift_gradient
+*/
+VX_API_ENTRY vx_status VX_API_CALL vxuCalcSiftGradient(vx_context context, vx_image orient, vx_image magni, vx_array keypt, vx_array descr);
 
 #ifdef __cplusplus
 }

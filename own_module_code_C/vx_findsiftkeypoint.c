@@ -34,16 +34,20 @@
 
 static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
-    if (num == 5)
-    {
+	if (num == 6)
+	{
 		//parameters
 		vx_image prev = (vx_image)parameters[0];
 		vx_image curr = (vx_image)parameters[1];
 		vx_image next = (vx_image)parameters[2];
 		vx_scalar octave = (vx_scalar)parameters[3];
-		vx_array arr = (vx_array)parameters[4];
+		vx_scalar maximum = (vx_scalar)parameters[4];
+		vx_array arr = (vx_array)parameters[5];
 
-		vx_siftfeature foundKey;
+		vx_coordinates2d_t foundKey;
+
+		//maximum keypoints can be detected for single call of this node amount to 1000
+		int keyptCnt = 0;
 
 		//constants from original openCV SIFT code
 		/*
@@ -91,10 +95,13 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		fff = fopen("www.txt", "a+");
 
 		//access to 'curr' vx_image
-		int SIFT_IMG_BORDER = 5;
+		int SIFT_IMG_BORDER = 8;
 		//int VALUE_THRESHOLD = 50;
 		int r, c;
 		vx_int32 o;
+
+		//maximum keypoints
+		vx_int32 MAXIMUM_KEYPOINTS = 0;
 
 
 		//=================BEGIN. assume we're using same size of vx_images as paramters
@@ -112,8 +119,9 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 
 
 		vxAccessScalarValue(octave, &o);
+		vxAccessScalarValue(maximum, &MAXIMUM_KEYPOINTS);
 
-		fprintf(fff, "w : %d, h : %d\n", w, h);
+		//fprintf(fff, "w : %d, h : %d\n, max : %d", w, h, (int)MAXIMUM_KEYPOINTS);
 
 		//allowing access to current vx_image layer
 		if (vxAccessImagePatch(curr, &curr_imrect, curr_plane, &curr_imaddr, &curr_imbaseptr, VX_READ_ONLY) != VX_SUCCESS)
@@ -128,9 +136,9 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		//fprintf(fff, "< ");
 
 		//pixel access loop
-		for (int y = SIFT_IMG_BORDER; y < h - SIFT_IMG_BORDER; y++)
+		for (int y = SIFT_IMG_BORDER; y < (int)(h - SIFT_IMG_BORDER); y++)
 		{
-			for (int x = SIFT_IMG_BORDER; x < w - SIFT_IMG_BORDER; x++)
+			for (int x = SIFT_IMG_BORDER; x < (int)(w - SIFT_IMG_BORDER); x++)
 			{
 
 				//currpixel : pixel we're looking as candidate. This one will be compared to neighboring..
@@ -186,26 +194,38 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 				{
 					//if we found maxima/minima, save the position
 
-					//doing verification for good keypoint
-					/*
-					dD[0] = ((vx_float32)((*curr_neighbors[0]) - (*curr_neighbors[4])))*deriv_scale;		//x direction derivative
-					dD[1] = ((vx_float32)((*curr_neighbors[2]) - (*curr_neighbors[6])))*deriv_scale;		//y direction derivative
-					dD[2] = ((vx_float32)((*next_neighbors[0]) - (*prev_neighbors[0])))*deriv_scale;		//layer derivative
 
-					*/
+					//and next, check if the corresponding pixel is in edge or not
+					vx_int16 d = *currpixel;
+					vx_float32 dxx = (*curr_neighbors[2]) + (*curr_neighbors[6]) - 2 * d;
+					vx_float32 dyy = (*curr_neighbors[0]) + (*curr_neighbors[4]) - 2 * d;
+					vx_float32 dxy = ((*curr_neighbors[1]) - (*curr_neighbors[3]) - (*curr_neighbors[5]) - (*curr_neighbors[7])) / 4.0;
 
-					r = y; c = x;
-					r = r*(1 << o);
-					c = c*(1 << o);
-					 
-					foundKey.point.x = (vx_uint32)c;
-					foundKey.point.y = (vx_uint32)r;
-					vxAddArrayItems(arr, 1, &foundKey, 0);
+					vx_float32 tr = dxx + dyy;
+					vx_float32 det = dxx * dyy - dxy * dxy;
 
-					fprintf(fff, "[%d %d]\n", c, r);
+					//is edge?
+					if (det > 0 && tr * tr / det < (10 + 1.0)*(10 + 1.0) / 10)
+					{
+
+						r = y; c = x;
+						r = r*(1 << o);
+						c = c*(1 << o);
+						foundKey.x = (vx_uint32)c;
+						foundKey.y = (vx_uint32)r;
+						vxAddArrayItems(arr, 1, &foundKey, 0);
+
+						fprintf(fff, "[%d %d]\n", c, r);
+
+						keyptCnt++;
+					}
+
+					//fprintf(fff, "%c", (*ptr2));
+
+					if (keyptCnt >= ((int)MAXIMUM_KEYPOINTS)) break;
 				}
-				
-				//fprintf(fff, "%c", (*ptr2));
+
+				if (keyptCnt >= ((int)MAXIMUM_KEYPOINTS)) break;
 			}
 
 		}
@@ -225,7 +245,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		fclose(fff);
 		//=================END
 
-	
+
 
 		/*
 		a1.x = (vx_uint32)111;
@@ -242,8 +262,8 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 
 
 		return VX_SUCCESS;
-    }
-    
+	}
+
 	return VX_ERROR_INVALID_PARAMETERS;
 }
 
@@ -275,7 +295,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointInputValidator(vx_node node, vx_u
 		}
 		vxReleaseParameter(&param);
 	}
-	if (index == 3)
+	if (index == 3 || index == 4)
 	{
 
 		vx_parameter param = vxGetParameterByIndex(node, index);
@@ -305,18 +325,32 @@ static vx_status VX_CALLBACK vxFindSiftKeypointInputValidator(vx_node node, vx_u
 static vx_status VX_CALLBACK vxFindSiftKeypointOutputValidator(vx_node node, vx_uint32 index, vx_meta_format_t *ptr)
 {
 
-    vx_status status = VX_ERROR_INVALID_PARAMETERS;
-    if (index == 4)
-    {
-        ptr->type = VX_TYPE_ARRAY;
-		ptr->dim.array.item_type = VX_TYPE_COORDINATES2D;
-        ptr->dim.array.capacity = 1000; 
-		//no defined capacity requirement
-        status = VX_SUCCESS;
-    }
+	vx_status status = VX_ERROR_INVALID_PARAMETERS;
+	if (index == 5)
+	{
+		vx_parameter param = vxGetParameterByIndex(node, 4);
 
-    return status;
-	
+		if (param)
+		{
+			vx_scalar maximum;
+			vx_int32 max_keypoint_num;
+			vxQueryParameter(param, VX_PARAMETER_ATTRIBUTE_REF, &maximum, sizeof(maximum));
+
+			vxAccessScalarValue(maximum, &max_keypoint_num);
+
+			ptr->type = VX_TYPE_ARRAY;
+			ptr->dim.array.item_type = VX_TYPE_COORDINATES2D;
+			ptr->dim.array.capacity = max_keypoint_num;
+			//no defined capacity requirement
+			status = VX_SUCCESS;
+			vxReleaseScalar(&maximum);
+
+		}
+		vxReleaseParameter(&param);
+	}
+
+	return status;
+
 }
 
 
@@ -325,7 +359,8 @@ static vx_param_description_t findsiftkeypoint_kernel_params[] = {
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_SCALAR, VX_PARAMETER_STATE_REQUIRED },
-	{VX_OUTPUT, VX_TYPE_ARRAY, VX_PARAMETER_STATE_OPTIONAL }, 
+	{ VX_INPUT, VX_TYPE_SCALAR, VX_PARAMETER_STATE_REQUIRED },
+	{ VX_OUTPUT, VX_TYPE_ARRAY, VX_PARAMETER_STATE_OPTIONAL },
 };
 
 vx_kernel_description_t findsiftkeypoint_kernel = {

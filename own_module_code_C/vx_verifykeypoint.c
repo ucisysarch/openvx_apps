@@ -34,26 +34,34 @@
 
 static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
-    if (num == 5)
+    if (num == 7)
     {
 		//parameters
 		vx_array before_arr = (vx_array)parameters[0];
 		vx_image mag = (vx_image)parameters[1];
 		vx_scalar img_width = (vx_scalar)parameters[2];
 		vx_scalar img_height = (vx_scalar)parameters[3];
-		vx_image output_image = (vx_image)parameters[4];
+		vx_scalar maximum = (vx_scalar)parameters[4];
+		vx_array after_arr = (vx_array)parameters[5];
+		vx_image output_image = (vx_image)parameters[6];
 
+
+		//maximum keypoints can be detected for single call of this node amount to 200
+		int keyptCnt = 0;
 
 		FILE* fff = NULL;
 		fff = fopen("www2.txt", "a+");
 
 		//magnitude threshold
-		int MAGNITUDE_THRESHOLD = 300;
+		int MAGNITUDE_THRESHOLD = 70;
+
+		//maximum keypoints
+		vx_int32 MAXIMUM_KEYPOINTS = 0;
 
 		//for access to array
 		vx_size i, j, stride = 0ul;
 		void* base = 0;
-		//vx_coordinates2d_t foundKey;
+		vx_coordinates2d_t foundKey;
 
 		//for access to magnitude image
 		vx_rectangle_t imrect;
@@ -79,8 +87,9 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 		//get length of array and permission to access array
 		vxQueryArray(before_arr, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
+
 		st = vxAccessArrayRange(before_arr, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
-		if (st != VX_SUCCESS) fprintf(fff, "ACCESS ARAAY FAILED\n");
+		if (st != VX_SUCCESS) return VX_SUCCESS;
 
 		//setting patch as entire size of image and get permission to access image
 		imrect.start_x = imrect.start_y = 0;
@@ -98,7 +107,9 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 		vxAccessScalarValue(img_width, &wwval);
 		vxAccessScalarValue(img_height, &hhval);
 
-		//fprintf(fff, "w %d, h %d\n", wwval, hhval);
+		vxAccessScalarValue(maximum, &MAXIMUM_KEYPOINTS);
+
+		//fprintf(fff, "w %d, h %d, max %d\n", wwval, hhval, (int)MAXIMUM_KEYPOINTS);
 		
 		for (i = 0; i < hhval; i++)
 		{
@@ -113,27 +124,53 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 		for (i = 0; i < num_items; i++)
 		{
-			vx_siftfeature* xp = &vxArrayItem(vx_siftfeature, base, i, stride);
+			vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
 
-			vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(imbaseptr, xp->point.x, xp->point.y, &imaddr);
+			vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(imbaseptr, xp->x, xp->y, &imaddr);
 			
 			if ((*currpixel) >= MAGNITUDE_THRESHOLD)
 			{
-				fprintf(fff, "%d %d\n", xp->point.x, xp->point.y);
-				//foundKey.x = (vx_uint32)xp->x;
-				//foundKey.y = (vx_uint32)xp->y;
-				//vxAddArrayItems(after_arr, 1, &foundKey, 0);
 
-				vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, xp->point.x, xp->point.y, &output_imaddr);
+				
+
+				fprintf(fff, "%d %d\n", xp->x, xp->y);
+
+				//add to after verification array
+				foundKey.x = (vx_uint32)xp->x;
+				foundKey.y = (vx_uint32)xp->y;
+				vxAddArrayItems(after_arr, 1, &foundKey, 0);
+
+				vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, xp->x, xp->y, &output_imaddr);
 				(*outputpixel) = (vx_uint8)255;
+
+				keyptCnt++;
+
+				if (keyptCnt >= ((int)MAXIMUM_KEYPOINTS)) break;
 			}
 
+			if (keyptCnt >= ((int)MAXIMUM_KEYPOINTS)) break;
 		}
 		vxCommitArrayRange(before_arr, 0, num_items, base);
 		vxCommitImagePatch(mag, &imrect, plane, &imaddr, imbaseptr);
 		vxCommitImagePatch(output_image, &output_imrect, output_plane, &output_imaddr, output_imbaseptr);
 
-		
+		/////////////////////////////////
+		FILE* fff2;
+		fff2 = fopen("outim.pgm", "wb");
+
+		fprintf(fff2, "P5\n%d %d\n255\n", wwval, hhval);
+		for (i = 0; i < hhval; i++)
+		{
+			for (j = 0; j < wwval; j++)
+			{
+				vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, j, i, &output_imaddr);
+				fprintf(fff2, "%c", (*outputpixel));
+			}
+		}
+
+		fclose(fff2);
+		/////////////////////////////////
+
 
 		fclose(fff);
 
@@ -194,7 +231,7 @@ static vx_status VX_CALLBACK vxVerifyKeypointInputValidator(vx_node node, vx_uin
 		}
 	}
 
-	if (index == 3 || index == 2)
+	if (index == 4 || index == 3 || index == 2)
 	{
 
 		vx_parameter param = vxGetParameterByIndex(node, index);
@@ -226,7 +263,32 @@ static vx_status VX_CALLBACK vxVerifyKeypointOutputValidator(vx_node node, vx_ui
 {
 
     vx_status status = VX_ERROR_INVALID_PARAMETERS;
-    if (index == 4)
+	if (index == 5)
+	{
+		vx_parameter param = vxGetParameterByIndex(node, 4);
+
+		if (param)
+		{
+			vx_scalar maximum;
+			vx_int32 max_keypoint_num;
+			vxQueryParameter(param, VX_PARAMETER_ATTRIBUTE_REF, &maximum, sizeof(maximum));
+
+			vxAccessScalarValue(maximum, &max_keypoint_num);
+
+			ptr->type = VX_TYPE_ARRAY;
+			ptr->dim.array.item_type = VX_TYPE_COORDINATES2D;
+			ptr->dim.array.capacity = max_keypoint_num;
+			//no defined capacity requirement
+			status = VX_SUCCESS;
+
+			vxReleaseScalar(&maximum);
+			
+		}
+		vxReleaseParameter(&param);
+
+		
+	}
+	if (index == 6)
     {
 		
 		vx_parameter param[2] = {
@@ -272,6 +334,8 @@ static vx_param_description_t verifykeypoint_kernel_params[] = {
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_SCALAR, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_SCALAR, VX_PARAMETER_STATE_REQUIRED },
+	{ VX_INPUT, VX_TYPE_SCALAR, VX_PARAMETER_STATE_REQUIRED },
+	{ VX_OUTPUT, VX_TYPE_ARRAY, VX_PARAMETER_STATE_OPTIONAL },
 	{VX_OUTPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_OPTIONAL }, 
 };
 
