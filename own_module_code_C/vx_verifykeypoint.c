@@ -29,8 +29,8 @@
 #include <VX/vx_lib_debug.h>
 #include <vx_internal.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 
 static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
@@ -49,8 +49,8 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 		//maximum keypoints can be detected for single call of this node amount to 200
 		int keyptCnt = 0;
 
-		FILE* fff = NULL;
-		fff = fopen("www2.txt", "a+");
+		//FILE* fff = NULL;
+		//fff = fopen("www2.txt", "a+");
 
 		//magnitude threshold
 		int MAGNITUDE_THRESHOLD = 70;
@@ -95,13 +95,13 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 		imrect.start_x = imrect.start_y = 0;
 		imrect.end_x = w; imrect.end_y = h;
 		st = vxAccessImagePatch(mag, &imrect, plane, &imaddr, &imbaseptr, VX_READ_ONLY);
-		if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [1]\n");
+		//if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [1]\n");
 
 		//setting patch for output vx_image for keypoint.
 		output_imrect.start_x = output_imrect.start_y = 0;
 		output_imrect.end_x = w; output_imrect.end_y = h;
 		st = vxAccessImagePatch(output_image, &output_imrect, output_plane, &output_imaddr, &output_imbaseptr, VX_READ_AND_WRITE);
-		if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [2]\n");
+		//if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [2]\n");
 
 		vx_int32 wwval, hhval;
 		vxAccessScalarValue(img_width, &wwval);
@@ -111,6 +111,8 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 		//fprintf(fff, "w %d, h %d, max %d\n", wwval, hhval, (int)MAXIMUM_KEYPOINTS);
 		
+		//writing keypoint to image
+		/*
 		for (i = 0; i < hhval; i++)
 		{
 			for (j = 0; j < wwval; j++)
@@ -119,6 +121,7 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 				(*outputpixel) = (vx_uint8)0;
 			}
 		}
+		*/
 		
 
 
@@ -133,7 +136,7 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 				
 
-				fprintf(fff, "%d %d\n", xp->x, xp->y);
+				//fprintf(fff, "%d %d\n", xp->x, xp->y);
 
 				//add to after verification array
 				foundKey.x = (vx_uint32)xp->x;
@@ -155,6 +158,8 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 		vxCommitImagePatch(output_image, &output_imrect, output_plane, &output_imaddr, output_imbaseptr);
 
 		/////////////////////////////////
+		//writing keypoint to image
+		/*
 		FILE* fff2;
 		fff2 = fopen("outim.pgm", "wb");
 
@@ -173,7 +178,7 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 
 
 		fclose(fff);
-
+		*/
 
 		return VX_SUCCESS;
     }

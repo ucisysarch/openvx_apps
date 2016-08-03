@@ -29,8 +29,8 @@
 #include <VX/vx_lib_debug.h>
 #include <vx_internal.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 
 static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
@@ -91,8 +91,8 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		//vx_image*  DOG_pyramid = (vx_image*)DOG_pyramid_ref;
 		//vx_array keypoints = (vx_array)parameters[1];
 
-		FILE* fff = NULL;
-		fff = fopen("www.txt", "a+");
+		//FILE* fff = NULL;
+		//fff = fopen("www.txt", "a+");
 
 		//access to 'curr' vx_image
 		int SIFT_IMG_BORDER = 8;
@@ -124,14 +124,11 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		//fprintf(fff, "w : %d, h : %d\n, max : %d", w, h, (int)MAXIMUM_KEYPOINTS);
 
 		//allowing access to current vx_image layer
-		if (vxAccessImagePatch(curr, &curr_imrect, curr_plane, &curr_imaddr, &curr_imbaseptr, VX_READ_ONLY) != VX_SUCCESS)
-			fprintf(fff, "current layer access failed\n");
+		vxAccessImagePatch(curr, &curr_imrect, curr_plane, &curr_imaddr, &curr_imbaseptr, VX_READ_ONLY);
 		//allowing access to previous vx_image layer
-		if (vxAccessImagePatch(prev, &prev_imrect, prev_plane, &prev_imaddr, &prev_imbaseptr, VX_READ_ONLY) != VX_SUCCESS)
-			fprintf(fff, "previous layer access failed\n");
+		vxAccessImagePatch(prev, &prev_imrect, prev_plane, &prev_imaddr, &prev_imbaseptr, VX_READ_ONLY);
 		//allowing access to next vx_image layer
-		if (vxAccessImagePatch(next, &next_imrect, next_plane, &next_imaddr, &next_imbaseptr, VX_READ_ONLY) != VX_SUCCESS)
-			fprintf(fff, "next layer access failed\n");
+		vxAccessImagePatch(next, &next_imrect, next_plane, &next_imaddr, &next_imbaseptr, VX_READ_ONLY); 
 
 		//fprintf(fff, "< ");
 
@@ -215,7 +212,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 						foundKey.y = (vx_uint32)r;
 						vxAddArrayItems(arr, 1, &foundKey, 0);
 
-						fprintf(fff, "[%d %d]\n", c, r);
+						//fprintf(fff, "[%d %d]\n", c, r);
 
 						keyptCnt++;
 					}
@@ -242,7 +239,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		//vxAccessScalarValue(octave, &o);
 		//fprintf(fff, "received %d as octave\n", o);
 
-		fclose(fff);
+		//fclose(fff);
 		//=================END
 
 

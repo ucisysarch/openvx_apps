@@ -165,9 +165,9 @@ int main(int argc, char* argv[])
 	vx_uint8* bytes;
 
 	//Read width and height
-	printf("before scan!\n");
+	//printf("before scan!\n");
 	fscanf(in, "%*[^\n]\n%d %d\n%*[^\n]\n", &width, &height);
-	printf("after scan! W(%d) H(%d)\n", width, height);
+	//printf("after scan! W(%d) H(%d)\n", width, height);
 
 	bytes = (vx_uint8*)malloc(sizeof(vx_uint8)*width*height);
 
@@ -291,10 +291,8 @@ int main(int argc, char* argv[])
 
 
 	if (vxSobel3x3Node(graph, image, x_grad, y_grad) == 0) printf("ERROR SOBEL NODE\n");
-	else printf("GETTING GRADIENTS BY SOBEL COMPLETE!\n");
 
 	if (vxMagnitudeNode(graph, x_grad, y_grad, mag) == 0) printf("ERROR MAGNITUDE NODE\n");
-	else printf("GETTING MAGNITUDE FROM GRADIENTS COMPLETE!\n");
 
 	// [!] phase function doesn't return radian value(0 ~ 2*PHI or 0 ~ 6.28). Rather they'll be mapped into u8 value(0 ~ 255)
 	// < 0 ~ 6.28 => 0 ~ 255 >
@@ -304,7 +302,6 @@ int main(int argc, char* argv[])
 	*/
 
 	if (vxGaussianPyramidNode(graph, image, pyra) == 0) printf("ERROR GAUSSIANPYRAMID\n");
-	else printf("GAUSSIAN PYRAMID COMPLETE!\n");
 
 	//===== Building Gaussian pyramid =====//
 	//
@@ -376,14 +373,14 @@ int main(int argc, char* argv[])
 
 
 	//own module
-	printf("befroe SIFTNODE\n");
+	//printf("befroe SIFTNODE\n");
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
 		for (int j = 0; j < (OCTAVE_LAYERS - 1 - 2); j++)
 		{
-			printf("DOG [%d] [%d] [%d] (octave %d) => keypt_arr[%d]\n",
+			/*printf("DOG [%d] [%d] [%d] (octave %d) => keypt_arr[%d]\n",
 				(i*(OCTAVE_LAYERS - 1)) + j, (i*(OCTAVE_LAYERS - 1)) + j + 1, (i*(OCTAVE_LAYERS - 1)) + j + 2, i,
-				(i*(OCTAVE_LAYERS - 1-2)) + j);
+				(i*(OCTAVE_LAYERS - 1-2)) + j);*/
 
 			
 			//find keypoints from 3 DOG images
@@ -409,17 +406,17 @@ int main(int argc, char* argv[])
 
 	
 
-	printf("after SIFTNODE\n");
+	//printf("after SIFTNODE\n");
 
 	// Running graph we created.
 	vx_status final_status = vxVerifyGraph(graph);
 	if (final_status == VX_SUCCESS)
 	{
-		printf("Graph got verified!\n");
+		//printf("Graph got verified!\n");
 		final_status = vxProcessGraph(graph);
 	}
 
-	printf("PROCESS GRAPH COMPLETE\n");
+	//printf("PROCESS GRAPH COMPLETE\n");
 
 
 
@@ -558,5 +555,5 @@ int main(int argc, char* argv[])
 	vxReleaseContext(&context);
 
 	int num;
-	scanf("%d", &num);
+	//scanf("%d", &num);
 }
