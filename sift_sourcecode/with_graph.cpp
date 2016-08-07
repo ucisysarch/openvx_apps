@@ -10,12 +10,46 @@
 #define MAX_KEYPOINTS_PER_THREE_DOGS 200
 
 //valuables for custom convoution
-static const vx_uint32 gaussian5x5scale = 256;
-static const vx_uint32 gaussian7x7scale = 1024;
-static const vx_uint32 gaussian9x9scale = 65536;
-static const vx_uint32 gaussian11x11scale = 2097152;
+static const vx_uint32 gaussian1Scale = 1024;
+static const vx_uint32 gaussian2Scale = 1024;
+static const vx_uint32 gaussian3Scale = 1024;
+static const vx_uint32 gaussian4Scale = 8192;
+//static const vx_uint32 gaussian5x5scale = 256;
+//static const vx_uint32 gaussian7x7scale = 1024;
+//static const vx_uint32 gaussian9x9scale = 65536;
+//static const vx_uint32 gaussian11x11scale = 2097152;
 
 //make convolution mask using pibonachi
+static vx_int16 gaussian1[3][3] =
+{
+	{ 99, 120, 99 },
+	{ 120, 148, 120 },
+	{ 99, 120, 99 },
+};
+
+static vx_int16 gaussian2[3][3] =
+{
+	{ 111, 115, 111 },
+	{ 115, 120, 115 },
+	{111, 115, 111 },
+};
+
+static vx_int16 gaussian3[3][3] =
+{
+	{ 113, 114, 113 },
+	{ 114, 116, 114 },
+	{ 113, 114, 113 },
+};
+
+static vx_int16 gaussian4[3][3] =
+{
+	{ 909, 911, 909 },
+	{ 911, 912, 911 },
+	{ 909, 911, 909 },
+};
+
+
+/*
 static vx_int16 gaussian5x5[5][5] =
 {
 	{ 1, 4, 6, 4, 1 },
@@ -62,6 +96,7 @@ static const vx_int16 gaussian11x11[11][11] =
 	{ 10, 100, 450, 1200, 2100, 25200, 2100, 1200, 450, 100, 10 },
 	{ 1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1 },
 };
+*/
 
 //initialize custom convolvution.
 static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 num)
@@ -71,29 +106,41 @@ static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 n
 
 	switch (num)
 	{
-	case 5:
-		conv = vxCreateConvolution(context, 5, 5);
+	case 1: //case 5:
+		//conv = vxCreateConvolution(context, 5, 5);
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian5x5);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian5x5scale, sizeof(vx_uint32));
+		//vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian5x5);
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian1);
+		//status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian5x5scale, sizeof(vx_uint32));
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian1Scale, sizeof(vx_uint32));
 		break;
-	case 7:
-		conv = vxCreateConvolution(context, 7, 7);
+	case 2: //case 7:
+		//conv = vxCreateConvolution(context, 7, 7);
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian7x7);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian7x7scale, sizeof(vx_uint32));
+		//vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian7x7);
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian2);
+		//status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian7x7scale, sizeof(vx_uint32));
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian2Scale, sizeof(vx_uint32));
 		break;
-	case 9:
-		conv = vxCreateConvolution(context, 9, 9);
+	case 3: //case 9:
+		//conv = vxCreateConvolution(context, 9, 9);
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian9x9);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian9x9scale, sizeof(vx_uint32));
+		//vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian9x9);
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian3);
+		//status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian9x9scale, sizeof(vx_uint32));
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian3Scale, sizeof(vx_uint32));
 		break;
-	case 11:
-		conv = vxCreateConvolution(context, 11, 11);
+	case 4: //case 11:
+		//conv = vxCreateConvolution(context, 11, 11);
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian11x11);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian11x11scale, sizeof(vx_uint32));
+		//vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian11x11);
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian4);
+		//status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian11x11scale, sizeof(vx_uint32));
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian4Scale, sizeof(vx_uint32));
 		break;
 	default:
 		break;
@@ -209,10 +256,14 @@ int main(int argc, char* argv[])
 
 
 	//convolution values for gaussian blur
-	vx_convolution conv5x5 = vxCreateGaussianConvolution(context, 5);
-	vx_convolution conv7x7 = vxCreateGaussianConvolution(context, 7);
-	vx_convolution conv9x9 = vxCreateGaussianConvolution(context, 9);
-	vx_convolution conv11x11 = vxCreateGaussianConvolution(context, 11);
+	vx_convolution conv1 = vxCreateGaussianConvolution(context, 1);
+	vx_convolution conv2 = vxCreateGaussianConvolution(context, 2);
+	vx_convolution conv3 = vxCreateGaussianConvolution(context, 3);
+	vx_convolution conv4 = vxCreateGaussianConvolution(context, 4);
+	//vx_convolution conv5x5 = vxCreateGaussianConvolution(context, 5);
+	//vx_convolution conv7x7 = vxCreateGaussianConvolution(context, 7);
+	//vx_convolution conv9x9 = vxCreateGaussianConvolution(context, 9);
+	//vx_convolution conv11x11 = vxCreateGaussianConvolution(context, 11);
 
 	//Create graph for context declared above
 	vx_graph graph = vxCreateGraph(context);
@@ -330,20 +381,30 @@ int main(int argc, char* argv[])
 		//
 		for (int j = 1; j < OCTAVE_LAYERS; j++)
 		{
+			//vxGaussian3x3Node(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], gau_pyra[(i*OCTAVE_LAYERS) + j]);
+
 			vx_image tempimage = vxCreateVirtualImage(graph, 0, 0, VX_DF_IMAGE_S16);
 
+			
 			if (j<2)
-				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv5x5, tempimage);
+				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv1, tempimage);
+				//vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv5x5, tempimage);
 			else if (j<3)
-				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv7x7, tempimage);
-			else
-				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv9x9, tempimage);
+				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv2, tempimage);
+				//vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv7x7, tempimage);
+			else if (j<4)
+				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv3, tempimage);
+				//vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv9x9, tempimage);
+			else if (j<5)
+				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv4, tempimage);
+			
 
 			vxConvertDepthNode(graph, tempimage, gau_pyra[(i*OCTAVE_LAYERS) + j], VX_CONVERT_POLICY_WRAP, scalar1);
-
+			
 			
 		}
 
+	
 	}
 
 
@@ -374,6 +435,7 @@ int main(int argc, char* argv[])
 
 	//own module
 	//printf("befroe SIFTNODE\n");
+	
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
 		for (int j = 0; j < (OCTAVE_LAYERS - 1 - 2); j++)
@@ -392,7 +454,6 @@ int main(int argc, char* argv[])
 			//verify(reduce) keypoints from keypoints found in 3 DOG images
 			if ((vxVerifyKeypointNode(graph, keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], mag, width, height, (vx_int32)MAX_KEYPOINTS_PER_THREE_DOGS, verified_keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], keypoint_img[(i*(OCTAVE_LAYERS - 1 - 2)) + j])) == 0)
 				printf("VERIFYKEYPOINT NODE FAILED\n");
-
 			
 			//make descriptor from verified keypoints above
 			/*
@@ -402,6 +463,7 @@ int main(int argc, char* argv[])
 
 		}
 	}
+	
 
 
 	
@@ -482,9 +544,9 @@ int main(int argc, char* argv[])
 			sprintf(ingn, "%d-%d.pgm", i, j);
 			saveimage(ingn, &gau_pyra[(i*OCTAVE_LAYERS) + j]);
 		}
+	
+	
 	*/
-	
-	
 	//save keypoint images as pgm
 	
 	/*

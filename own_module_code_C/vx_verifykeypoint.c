@@ -180,6 +180,8 @@ static vx_status VX_CALLBACK vxVerifyKeypointKernel(vx_node node, vx_reference *
 		fclose(fff);
 		*/
 
+		//fclose(fff);
+
 		return VX_SUCCESS;
     }
     
