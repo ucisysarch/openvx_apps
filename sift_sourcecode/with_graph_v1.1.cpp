@@ -327,11 +327,9 @@ int main(int argc, char* argv[])
 	//Create pyramid for basis of gaussian pyramid we're going to build. Only U8 is allowed.
 	vx_pyramid pyra = vxCreateVirtualPyramid(graph, OCTAVE_NUM, VX_SCALE_PYRAMID_HALF, width, height, VX_DF_IMAGE_U8);
 
-
 	//vx_scalar for converting depth (U8 -> S16)
 	vx_int32 zero1 = 0;
 	vx_int32 zero2 = 0;
-
 
 	vx_scalar scalar1 = vxCreateScalar(context, VX_TYPE_INT32, (void *)&zero1);
 	vx_scalar scalar2 = vxCreateScalar(context, VX_TYPE_INT32, (void *)&zero2);
@@ -356,11 +354,11 @@ int main(int argc, char* argv[])
 		keypt_arr[i] = vxCreateArray(context, VX_TYPE_COORDINATES2D, (MAX_KEYPOINTS_PER_THREE_DOGS));
 		//verified_keypt_arr[i] = vxCreateArray(context, VX_TYPE_COORDINATES2D, MAX_KEYPOINTS_PER_THREE_DOGS);
 		//keypoint_img[i] = vxCreateVirtualImage(graph, width, height, VX_DF_IMAGE_U8);
-		descrs[i] = vxCreateArray(context, VX_TYPE_FLOAT32, 50000);
+		descrs[i] = vxCreateArray(context, VX_TYPE_FLOAT32, 30000);
 	}
 
 
-
+	
 
 
 	//================================================================================================
@@ -456,10 +454,11 @@ int main(int argc, char* argv[])
 	vxConvertDepthNode(graph, mag, mag_test, VX_CONVERT_POLICY_WRAP, scalar1);
 	//vxConvertDepthNode(graph, ori, ori_test, VX_CONVERT_POLICY_WRAP, scalar1);
 
-
+	
 	//own module
 	//printf("befroe SIFTNODE\n");
 
+	
 	
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
@@ -469,29 +468,29 @@ int main(int argc, char* argv[])
 			//(i*(OCTAVE_LAYERS - 1)) + j, (i*(OCTAVE_LAYERS - 1)) + j + 1, (i*(OCTAVE_LAYERS - 1)) + j + 2, i,
 			//(i*(OCTAVE_LAYERS - 1-2)) + j);
 
-
+		
 			//find keypoints from 3 DOG images
 			if ((vxFindSiftKeypointNode(graph, mag, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], i,
 				(vx_int32)(MAX_KEYPOINTS_PER_THREE_DOGS), keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)])) == 0)
 				printf("FINDSIFTKEYPOINT NODE FAILED\n");
 
-
-			//verify(reduce) keypoints from keypoints found in 3 DOG images
-			//if ((vxVerifyKeypointNode(graph, keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], mag, width, height, (vx_int32)MAX_KEYPOINTS_PER_THREE_DOGS, verified_keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], keypoint_img[(i*(OCTAVE_LAYERS - 1 - 2)) + j])) == 0)
-			//	printf("VERIFYKEYPOINT NODE FAILED\n");
-
 			//make descriptor from verified keypoints above
+			if (vxCalcSiftGradientNode(graph, ori, mag, keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], descrs[(i*(OCTAVE_LAYERS - 1 - 2) + j)]) == 0)
+				printf("CALCSIFTGRADIENT NODE FAILED\n");
 
 			//if (vxCalcSiftGradientNode(graph, ori, mag, verified_keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)], descrs[(i*(OCTAVE_LAYERS - 1 - 2) + j)]) == 0)
 			//	printf("CALCSIFTGRADIENT NODE FAILED\n");
 
-
+			
 		}
 	}
 	
+	
+	//if (vxCalcSiftGradientNode(graph, ori, mag, keypt_arr[1], descrs[1]) == 0)
+	//			printf("CALCSIFTGRADIENT NODE FAILED\n");
+	
 
-
-
+	
 
 
 	//printf("after SIFTNODE\n");
@@ -510,13 +509,8 @@ int main(int argc, char* argv[])
 
 
 	//checking a keypoint array for debugging
-	/*
-	vx_size num_items;
-	vx_size item_size;
-	vxQueryArray(verified_keypt_arr[0], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
-	vxQueryArray(verified_keypt_arr[0], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
-	printf("[ %d %d ]\n", num_items, item_size);
-	*/
+	
+	
 	//vxQueryArray(new_keypt_arr[0], VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
 	//vxQueryArray(new_keypt_arr[0], VX_ARRAY_ATTRIBUTE_ITEMSIZE, &item_size, sizeof(item_size));
 	//printf("[ %d %d ]\n", num_items, item_size);
@@ -559,6 +553,25 @@ int main(int argc, char* argv[])
 	int na;
 	scanf("%d", &na);
 
+	vx_size num_items[10];
+	vx_size item_size[10];
+	vx_size arr_capa[10];
+	vx_size key_num_items[10];
+	vx_size key_item_size[10];
+	vx_size key_arr_capa[10];
+	
+
+	for (int k = 0; k < 10; k++)
+	{
+		vxQueryArray(keypt_arr[k], VX_ARRAY_CAPACITY, &arr_capa[k], sizeof(arr_capa[k]));
+		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &num_items[k], sizeof(num_items[k]));
+		vxQueryArray(keypt_arr[k], VX_ARRAY_ITEMSIZE, &item_size[k], sizeof(item_size[k]));
+		vxQueryArray(descrs[k], VX_ARRAY_CAPACITY, &key_arr_capa[k], sizeof(key_arr_capa[k]));
+		vxQueryArray(descrs[k], VX_ARRAY_NUMITEMS, &key_num_items[k], sizeof(key_num_items[k]));
+		vxQueryArray(descrs[k], VX_ARRAY_ITEMSIZE, &key_item_size[k], sizeof(key_item_size[k]));
+		printf("<%d> [ %d %d %d, %d %d %d ]\n", k, num_items[k], item_size[k], arr_capa[k],
+			key_num_items[k], key_item_size[k], key_arr_capa[k]);
+	}
 	//saveimage("oririr.pgm", &image);
 	saveimage("x_grad.pgm", &x_grad_test);
 	saveimage("y_grad.pgm", &y_grad_test);
