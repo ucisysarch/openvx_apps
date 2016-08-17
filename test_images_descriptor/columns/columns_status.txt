@@ -1,0 +1,50 @@
+<keypoint array [0]>
+found keypoints : 26
+<descriptor array [0]
+descriptor values : 3328 (26 * 128 == 3328)
+
+<keypoint array [1]>
+found keypoints : 72
+<descriptor array [1]
+descriptor values : 9216 (72 * 128 == 9216)
+
+<keypoint array [2]>
+found keypoints : 200
+<descriptor array [2]
+descriptor values : 25600 (200 * 128 == 25600)
+
+<keypoint array [3]>
+found keypoints : 200
+<descriptor array [3]
+descriptor values : 25600 (200 * 128 == 25600)
+
+<keypoint array [4]>
+found keypoints : 1
+<descriptor array [4]
+descriptor values : 128 (1 * 128 == 128)
+
+<keypoint array [5]>
+found keypoints : 14
+<descriptor array [5]
+descriptor values : 1792 (14 * 128 == 1792)
+
+<keypoint array [6]>
+found keypoints : 5
+<descriptor array [6]
+descriptor values : 640 (5 * 128 == 640)
+
+<keypoint array [7]>
+found keypoints : 6
+<descriptor array [7]
+descriptor values : 768 (6 * 128 == 768)
+
+<keypoint array [8]>
+found keypoints : 0
+<descriptor array [8]
+descriptor values : 0 (0 * 128 == 0)
+
+<keypoint array [9]>
+found keypoints : 0
+<descriptor array [9]
+descriptor values : 0 (0 * 128 == 0)
+

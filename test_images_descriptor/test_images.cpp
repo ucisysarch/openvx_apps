@@ -5,8 +5,9 @@
 
 #define OCTAVE_NUM 5
 #define OCTAVE_LAYERS 5
-#define INPUT_IMAGE "pepper"
-#define INPUT_IMAGE_PATH "pgms/" INPUT_IMAGE ".pgm"
+
+static char INPUT_IMAGE[64] = { 0, };
+static char INPUT_IMAGE_PATH[64] = { 0, };
 
 #define MAX_KEYPOINTS_PER_THREE_DOGS 200
 
@@ -45,8 +46,6 @@ static vx_int16 gaussian4[3][3] =
 	{ 909, 911, 909 },
 };
 
-
-
 //initialize custom convolvution.
 static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 num)
 {
@@ -70,7 +69,7 @@ static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 n
 		vxCopyConvolutionCoefficients(conv, (vx_int16*)gaussian3, VX_WRITE_ONLY, VX_MEMORY_TYPE_HOST);
 		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_SCALE, (void *)&gaussian3Scale, sizeof(vx_uint32));
 		break;
-	case 4: 
+	case 4:
 		conv = vxCreateConvolution(context, 3, 3);
 		vxCopyConvolutionCoefficients(conv, (vx_int16*)gaussian4, VX_WRITE_ONLY, VX_MEMORY_TYPE_HOST);
 		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_SCALE, (void *)&gaussian4Scale, sizeof(vx_uint32));
@@ -101,7 +100,7 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 
 	FILE* recordFile;
 	char recordFilename[64] = { 0, };
-	sprintf(recordFilename, "%s_status.txt", INPUT_IMAGE);
+	sprintf(recordFilename, "record\\%s_status.txt", INPUT_IMAGE);
 	if ((recordFile = fopen(recordFilename, "w")) == NULL)
 	{
 		printf("can't write to recordFile..\n");
@@ -113,7 +112,7 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 	{
 		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &num_items[k], sizeof(num_items[k]));
 		vxQueryArray(descr_arr[k], VX_ARRAY_NUMITEMS, &key_num_items[k], sizeof(key_num_items[k]));
-		
+
 		printf("<keypoint array [%d]>\n", k);
 		printf("found keypoints : %d\n", num_items[k]);
 		printf("<descriptor array [%d]\n", k);
@@ -132,15 +131,15 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 		char recordKeyptFilename[64] = { 0, };
 		char recordDescrFilename[64] = { 0, };
 
-		sprintf(recordKeyptFilename, "%s_keypt%d.txt", INPUT_IMAGE, (k + 1));
-		sprintf(recordDescrFilename, "%s_descr%d.txt", INPUT_IMAGE, (k + 1));
-		
+		sprintf(recordKeyptFilename, "record\\%s_keypt%d.txt", INPUT_IMAGE, (k + 1));
+		sprintf(recordDescrFilename, "record\\%s_descr%d.txt", INPUT_IMAGE, (k + 1));
+
 		if ((record_keypt = fopen(recordKeyptFilename, "w")) == NULL)
 			exit(1);
 		if ((record_descr = fopen(recordDescrFilename, "w")) == NULL)
 			exit(1);
 
-		
+
 
 
 		//keypoints
@@ -194,58 +193,12 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 		fclose(record_keypt);
 		fclose(record_descr);
 	}
-	
+
 	//access each keypoint array and descriptor array write every elements
 
 	fclose(recordFile);
 	printf("recording complete.\n");
-	
-}
 
-
-//Make 'imgname.png' from given vx_image.
-void saveimage(char* imgname, vx_image* img)
-{
-	//write-only
-	FILE* outf = fopen(imgname, "wb");
-
-	//pgm file contains width, height value itself.
-	vx_uint32 w, h;
-	vxQueryImage((*img), VX_IMAGE_WIDTH, &w, sizeof(w));
-	vxQueryImage((*img), VX_IMAGE_HEIGHT, &h, sizeof(h));
-	printf("%s %d %d>>>>\n", imgname, w, h);
-
-	//Set patch we are going to access from (0,0) to (width, height). This stands for entire image.
-	vx_rectangle_t imrect;
-	imrect.start_x = imrect.start_y = 0;
-	imrect.end_x = w; imrect.end_y = h;
-	vx_uint32 plane = 0;
-	vx_imagepatch_addressing_t imaddr;
-	void* imbaseptr = NULL;
-	vx_map_id img_id;
-
-	if (vxMapImagePatch((*img), &imrect, plane, &img_id, &imaddr, &imbaseptr, VX_READ_ONLY, VX_MEMORY_TYPE_NONE, VX_NOGAP_X) != VX_SUCCESS)
-		printf("access failed\n");
-
-	//write width, height, 255(max value for per pixel) to PGM file.
-	fprintf(outf, "P5\n%d %d\n255\n", w, h);
-
-	//write each pixel value as BINARY on file.
-	for (int y = 0; y < h; y++)
-	{
-		for (int x = 0; x < w; x++)
-		{
-			vx_uint8 *ptr2 = (vx_uint8 *)vxFormatImagePatchAddress2d(imbaseptr, x, y, &imaddr);
-
-			fprintf(outf, "%c", (*ptr2));
-		}
-
-	}
-
-
-	
-	vxUnmapImagePatch((*img), img_id);
-	fclose(outf);
 }
 
 
@@ -256,6 +209,11 @@ int main(int argc, char* argv[])
 	int width;
 	int height;
 
+	strcpy(INPUT_IMAGE, argv[1]);
+	strcpy(INPUT_IMAGE_PATH, "pgms\\");
+	strcat(INPUT_IMAGE_PATH, INPUT_IMAGE);
+	strcat(INPUT_IMAGE_PATH, ".pgm");
+
 	printf("opening %s.\n", INPUT_IMAGE_PATH);
 	FILE* in = fopen(INPUT_IMAGE_PATH, "rb");
 
@@ -263,9 +221,13 @@ int main(int argc, char* argv[])
 	vx_uint8* bytes;
 
 	//Read width and height
-	fscanf(in, "%*[^\n]\n%d %d\n%*[^\n]\n", &width, &height);
+	char pgmtype[8] = { 0, };
+	int dep;
+	fscanf(in, "%s %d %d %d", pgmtype, &width, &height, &dep);
 
 	bytes = (vx_uint8*)malloc(sizeof(vx_uint8)*width*height);
+
+	printf("type %s, w %d, h %d, d %d\n", pgmtype, width, height, dep);
 
 	//Fill bytes with pixel values
 	for (int y = 0; y<height; y++)
@@ -339,7 +301,7 @@ int main(int argc, char* argv[])
 		for (int j = 0; j < OCTAVE_LAYERS; j++)
 			gau_pyra[i*OCTAVE_LAYERS + j] = vxCreateImage(context, nw, nh, VX_DF_IMAGE_U8);
 
-		if (nw % 2 != 0) nw = (nw / 2) + 1;
+		if(nw % 2 != 0) nw = (nw /2) + 1;
 		else nw /= 2;
 		if (nh % 2 != 0) nh = (nh / 2) + 1;
 		else nh /= 2;
@@ -386,7 +348,7 @@ int main(int argc, char* argv[])
 	}
 
 
-	
+
 
 
 	//================================================================================================
@@ -405,6 +367,7 @@ int main(int argc, char* argv[])
 	if (vxGaussianPyramidNode(graph, image, pyra) == 0) printf("ERROR GAUSSIANPYRAMID\n");
 
 	//===== Building Gaussian pyramid =====//
+	//
 	nw = width; nh = height;
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
@@ -413,7 +376,8 @@ int main(int argc, char* argv[])
 		//		gau_pyra[10] (1st layer of octave 2) : half sized of gau_pyra[5]
 		//		gau_pyra[15] (1st layer of octave 3) : half sized of gau_pyra[10]
 		//		gau_pyra[20] (1st layer of octave 4) : half sized of gau_pyra[15]
-		if ((gau_pyra[i*OCTAVE_LAYERS] = vxGetPyramidLevel(pyra, i)) == 0) printf("WRONG INDEXING\n");
+		if ((gau_pyra[i*OCTAVE_LAYERS] = vxGetPyramidLevel(pyra, i)) == 0)
+			printf("WRONG INDEXING\n");
 
 
 		//next layer is blurred image from previous one.
@@ -433,6 +397,7 @@ int main(int argc, char* argv[])
 		{
 			vx_image tempimage = vxCreateVirtualImage(graph, nw, nh, VX_DF_IMAGE_S16);
 
+
 			if (j<2)
 				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv1, tempimage);
 			else if (j<3)
@@ -441,6 +406,23 @@ int main(int argc, char* argv[])
 				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv3, tempimage);
 			else if (j<5)
 				vxConvolveNode(graph, gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], conv4, tempimage);
+			
+			/*
+			vx_uint32 gb_h, gb_w;
+			vx_uint32 t_h, t_w;
+			vx_uint32 g_h, g_w;
+			vxQueryImage(tempimage, VX_IMAGE_WIDTH, &t_w, sizeof(t_w));
+			vxQueryImage(tempimage, VX_IMAGE_HEIGHT, &t_h, sizeof(t_h));
+			vxQueryImage(gau_pyra[(i*OCTAVE_LAYERS) + j], VX_IMAGE_WIDTH, &g_w, sizeof(g_w));
+			vxQueryImage(gau_pyra[(i*OCTAVE_LAYERS) + j], VX_IMAGE_HEIGHT, &g_h, sizeof(g_h));
+			vxQueryImage(gau_pyra[(i*OCTAVE_LAYERS) + (j-1)], VX_IMAGE_WIDTH, &gb_w, sizeof(gb_w));
+			vxQueryImage(gau_pyra[(i*OCTAVE_LAYERS) + (j - 1)], VX_IMAGE_HEIGHT, &gb_h, sizeof(gb_h));
+			printf("tem w(%d), h(%d)\n", t_w, t_h);
+			printf("gau w(%d), h(%d)\n", g_w, g_h);
+			printf("gau-1 w(%d), h(%d)\n", gb_w, gb_h);
+			*/
+
+			
 
 			vxConvertDepthNode(graph, tempimage, gau_pyra[(i*OCTAVE_LAYERS) + j], VX_CONVERT_POLICY_WRAP, scalar1);
 		}
@@ -449,6 +431,7 @@ int main(int argc, char* argv[])
 		else nw /= 2;
 		if (nh % 2 != 0) nh = (nh / 2) + 1;
 		else nh /= 2;
+
 	}
 
 
@@ -475,8 +458,8 @@ int main(int argc, char* argv[])
 	//vxConvertDepthNode(graph, y_grad, y_grad_test, VX_CONVERT_POLICY_WRAP, scalar1);
 	//vxConvertDepthNode(graph, mag, mag_test, VX_CONVERT_POLICY_WRAP, scalar1);
 
-	
-	
+
+
 	for (int i = 0; i < OCTAVE_NUM; i++)
 	{
 		for (int j = 0; j < (OCTAVE_LAYERS - 1 - 2); j++)
@@ -485,7 +468,7 @@ int main(int argc, char* argv[])
 			//(i*(OCTAVE_LAYERS - 1)) + j, (i*(OCTAVE_LAYERS - 1)) + j + 1, (i*(OCTAVE_LAYERS - 1)) + j + 2, i,
 			//(i*(OCTAVE_LAYERS - 1-2)) + j);
 
-		
+
 			//find keypoints from 3 DOG images
 			if ((vxFindSiftKeypointNode(graph, mag, DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 1], DOG_pyra[(i*(OCTAVE_LAYERS - 1)) + j + 2], i,
 				(vx_int32)(MAX_KEYPOINTS_PER_THREE_DOGS), keypt_arr[(i*(OCTAVE_LAYERS - 1 - 2) + j)])) == 0)
@@ -497,8 +480,8 @@ int main(int argc, char* argv[])
 
 		}
 	}
-	
-	
+
+
 
 	// Running graph we created.
 	vx_status final_status = vxVerifyGraph(graph);
@@ -545,4 +528,6 @@ int main(int argc, char* argv[])
 
 	int num;
 	//scanf("%d", &num);
+
+
 }
