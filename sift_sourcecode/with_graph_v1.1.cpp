@@ -87,122 +87,6 @@ static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 n
 	return conv;
 }
 
-//record image's keypoints and descriptor
-void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
-{
-
-	int na;
-	scanf("%d", &na);
-
-	printf("recording status of image..\n");
-
-	vx_size num_items[(OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2))];
-	vx_size key_num_items[(OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2))];
-
-	FILE* recordFile;
-	char recordFilename[64] = { 0, };
-	sprintf(recordFilename, "%s_status.txt", INPUT_IMAGE);
-	if ((recordFile = fopen(recordFilename, "w")) == NULL)
-	{
-		printf("can't write to recordFile..\n");
-		exit(1);
-	}
-
-	//every status on one file
-	for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++)
-	{
-		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &num_items[k], sizeof(num_items[k]));
-		vxQueryArray(descr_arr[k], VX_ARRAY_NUMITEMS, &key_num_items[k], sizeof(key_num_items[k]));
-		
-		printf("<keypoint array [%d]>\n", k);
-		printf("found keypoints : %d\n", num_items[k]);
-		printf("<descriptor array [%d]\n", k);
-		printf("descriptor values : %d (%d * 128 == %d)\n\n", key_num_items[k], num_items[k], (128 * num_items[k]));
-		fprintf(recordFile, "<keypoint array [%d]>\n", k);
-		fprintf(recordFile, "found keypoints : %d\n", num_items[k]);
-		fprintf(recordFile, "<descriptor array [%d]\n", k);
-		fprintf(recordFile, "descriptor values : %d (%d * 128 == %d)\n\n", key_num_items[k], num_items[k], (128 * num_items[k]));
-	}
-
-	for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++)
-	{
-		FILE* record_keypt = NULL;
-		FILE* record_descr = NULL;
-
-		char recordKeyptFilename[64] = { 0, };
-		char recordDescrFilename[64] = { 0, };
-
-		sprintf(recordKeyptFilename, "%s_keypt%d.txt", INPUT_IMAGE, (k + 1));
-		sprintf(recordDescrFilename, "%s_descr%d.txt", INPUT_IMAGE, (k + 1));
-		
-		if ((record_keypt = fopen(recordKeyptFilename, "w")) == NULL)
-			exit(1);
-		if ((record_descr = fopen(recordDescrFilename, "w")) == NULL)
-			exit(1);
-
-		
-
-
-		//keypoints
-		fprintf(record_keypt, "%d\n", num_items[k]);
-		if (num_items[k] > 0)
-		{
-			//access to keypoint array
-			vx_size kpt_stride = 0ul;
-			void* kpt_base = 0;
-			vx_map_id kpt_arr_id;
-			vxMapArrayRange(keypt_arr[k], (vx_size)0, (vx_size)num_items[k], &kpt_arr_id, &kpt_stride, (void**)&kpt_base,
-				VX_READ_ONLY, VX_MEMORY_TYPE_HOST, 0);
-			vx_int32 kpt_x, kpt_y;
-
-			//write keypoint elements
-			for (int i = 0; i < num_items[k]; i++)
-			{
-				vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, kpt_base, i, kpt_stride);
-				kpt_x = xp->x; kpt_y = xp->y;
-				fprintf(record_keypt, "%d %d\n", kpt_x, kpt_y);
-			}
-
-			vxUnmapArrayRange(keypt_arr[k], kpt_arr_id);
-		}
-
-		//descriptor
-		fprintf(record_descr, "%d\n", key_num_items[k]);
-		if (key_num_items[k] > 0)
-		{
-
-			//access to descriptor array
-			vx_size dsc_stride = 0ul;
-			void* dsc_base = 0;
-			vx_map_id dsc_arr_id;
-			vxMapArrayRange(descr_arr[k], (vx_size)0, (vx_size)key_num_items[k], &dsc_arr_id, &dsc_stride, (void**)&dsc_base,
-				VX_READ_ONLY, VX_MEMORY_TYPE_HOST, 0);
-
-
-			//write descriptor elements
-			for (int i = 0; i < key_num_items[k]; i++)
-			{
-				if ((i != 0) && (i % 128 == 0)) fprintf(record_descr, "\n");
-
-				vx_float32* xp = &vxArrayItem(vx_float32, dsc_base, i, dsc_stride);
-				fprintf(record_descr, "%f ", (*xp));
-			}
-
-			vxUnmapArrayRange(descr_arr[k], dsc_arr_id);
-		}
-
-		fclose(record_keypt);
-		fclose(record_descr);
-	}
-	
-	//access each keypoint array and descriptor array write every elements
-
-	fclose(recordFile);
-	printf("recording complete.\n");
-	
-}
-
-
 //Make 'imgname.png' from given vx_image.
 void saveimage(char* imgname, vx_image* img)
 {
@@ -513,7 +397,7 @@ int main(int argc, char* argv[])
 
 	//=========saving images for checking purpose===========
 
-	recordImageStatus(keypt_arr, descrs);
+
 	fclose(in);
 
 	//release data strutures created
