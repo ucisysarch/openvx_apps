@@ -21,10 +21,39 @@
 # MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 #
 
-add_subdirectory( framework )
-add_subdirectory( targets )
-add_subdirectory( sift )
-add_subdirectory( tests )
-add_subdirectory( vxu )
+# set target name
 
+set( GRAPH_TARGET_NAME sift_graph )
+set( SEQ_TARGET_NAME sift_seq )
+
+
+include_directories( BEFORE
+                     ${CMAKE_CURRENT_SOURCE_DIR}
+					 ${CMAKE_SOURCE_DIR}/include )
+					 
+# add a target named ${TARGET_NAME}
+add_executable (${GRAPH_TARGET_NAME}  sift_graph.cpp)
+add_executable (${SEQ_TARGET_NAME}  sift_seq.cpp)
+
+
+target_link_libraries( ${GRAPH_TARGET_NAME} vx_xyz_lib openvx-debug-lib openvx-extras-lib openvx-helper openvx )
+
+
+target_link_libraries( ${SEQ_TARGET_NAME} vx_xyz_lib openvx-debug-lib openvx-extras-lib openvx-helper openvx vxu )
+
+
+install ( TARGETS ${GRAPH_TARGET_NAME} 
+          RUNTIME DESTINATION bin
+          ARCHIVE DESTINATION lib
+          LIBRARY DESTINATION bin )
+
+install ( TARGETS ${SEQ_TARGET_NAME} 
+          RUNTIME DESTINATION bin
+          ARCHIVE DESTINATION lib
+          LIBRARY DESTINATION bin )
+		  
+set_target_properties( ${GRAPH_TARGET_NAME} PROPERTIES FOLDER ${SAMPLE_FOLDER} )
+		  
+set_target_properties( ${SEQ_TARGET_NAME} PROPERTIES FOLDER ${SAMPLE_FOLDER} )
+		  
 
