@@ -1,11 +1,16 @@
-# openvx_samples
+# openvx_apps
+Sample vision applications (currently only SIFT) implemented in OpenVX.
 
-Based on OpenVX 1.0. Some own module has been added to library. So to execute given code, we have to refer attached .lib, .dll, .h files.
+## Dependencies
+1. OpenCV for sequential programs
 
-own_module_code_C : own module code written in C. Originally used to be located in sample/targets/c_model. This was necessary for building process so won't be needed for running given code.
-bin : .dll files
-include : header files
-lib : static .lib files
 
---------------
-Own module 'findSiftKeypointNode' is a testing code yet. Took 3 vx_image as inputs and write to their local maxima/minima point into 'www.txt'. Other parameters vx_array and vx_int32 still not implemented.
+## How to build
+By building Openvx sample implementation, SIFT application will also be built. Two different versions of OpenVX are supported. Currently, version 1.1 has the most up-to-date implementation of SIFT. To build version 1.1 type the following commands in console. It will build OpenVX for 64bit linux machine. You can adjust these parameters according to your own set up. currently Linux and Windows are supported. Use the same commands to build version 1.0.1.
+
+```bash
+cd openvx_sample-1.1
+python Build.py --arch=64 --os=linux
+```
+
+Applications will be installed in install folder in OpenVX root folder.
