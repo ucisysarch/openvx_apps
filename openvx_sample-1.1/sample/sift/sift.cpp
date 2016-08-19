@@ -5,6 +5,7 @@
 
 #include "commons.h"
 
+#define DEBUG_MODE true
 
 /* Entry point. */
 int main(int argc, char* argv[])
@@ -263,22 +264,86 @@ int main(int argc, char* argv[])
 	vx_status final_status = vxVerifyGraph(graph);
 	if (final_status == VX_SUCCESS)
 	{
-		//printf("Graph got verified!\n");
+		printf("Graph verified!\n");
 		final_status = vxProcessGraph(graph);
+		if (final_status == VX_SUCCESS)
+			printf("Graph processed.\n");
 	}
 
-	//printf("PROCESS GRAPH COMPLETE\n");
 
-
-	//=========saving images for checking purpose===========
 
 	//recordImageStatus(keypt_arr, descrs);
 	for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++) {
 		vx_size array_len;
 		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &array_len, sizeof(vx_size));
-		printf("found %d keypoints at layer %d\n", (int)array_len, k);
+		printf("found %d keypoints at DOG %d\n", (int)array_len, k);
 	}
-    	//fclose(in);
+
+
+#ifdef DEBUG_MODE
+	for (int k = 0; k < (OCTAVE_NUM * OCTAVE_LAYERS); k++) {
+		char str[30];
+		sprintf(str, "dog_file_%d.pgm", k);
+		saveimage(str, &gau_pyra[k]);
+	}
+	
+	vx_map_id map_id;
+	vx_rectangle_t rect;
+	rect.start_x = 0;
+	rect.end_x = width;
+	rect.start_y = 0;
+	rect.end_y= height;
+	char * mapped_data = 0;
+	vx_imagepatch_addressing_t addressing = {
+		width,
+		height,
+		sizeof(vx_uint8),
+		width * sizeof(vx_uint8),
+		VX_SCALE_UNITY,
+		VX_SCALE_UNITY,
+		1,
+		1
+	};
+
+	vxMapImagePatch(image, &rect, 0, &map_id, &addressing, (void**)&mapped_data, VX_WRITE_ONLY, VX_MEMORY_TYPE_NONE, VX_NOGAP_X);
+ 	
+	for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++) {
+		vx_size array_len;
+		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &array_len, sizeof(vx_size));
+		if (array_len >0) {
+			
+			//access to keypoint array
+			vx_size kpt_stride = 0ul;
+			void* kpt_base = 0;
+			vx_map_id kpt_arr_id;
+			vxMapArrayRange(keypt_arr[k], (vx_size)0, (vx_size)array_len, &kpt_arr_id, &kpt_stride, (void**)&kpt_base,
+				VX_READ_ONLY, VX_MEMORY_TYPE_HOST, 0);
+			vx_int32 kpt_x, kpt_y;
+
+
+			for (int l = 0; l < (int) array_len; l++)
+			{
+				vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, kpt_base, l, kpt_stride);
+				kpt_x = xp->x; kpt_y = xp->y;
+				printf("%d %d\n", kpt_x, kpt_y);
+				int index = (kpt_y)*width+kpt_x;
+				if (index > 0) mapped_data[index-1] = 0x00;
+				if (index < height*width-1) mapped_data[index+1] = 0x00;
+				mapped_data[index] = 0x00;
+				if (kpt_y > 0) mapped_data[(kpt_y-1)*width+kpt_x] = 0x00;
+				if (kpt_y < height ) mapped_data[(kpt_y+1)*width+kpt_x] = 0x00;
+				
+			}
+
+			vxUnmapArrayRange(keypt_arr[k], kpt_arr_id);		
+		}
+
+	}
+	vxUnmapImagePatch(image, map_id);
+
+
+	saveimage("keypoints.pgm", &image);
+#endif
 
 	//release data strutures created
 	vxReleaseScalar(&scalar1);
