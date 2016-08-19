@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	
 	if (argc != 2) {
 	    printf("Usage: sift input_pgm_file\n");
-        exit(0);	
+	    exit(0);	
 	}
     
 	printf("opening %s.\n", argv[1]);
@@ -273,12 +273,12 @@ int main(int argc, char* argv[])
 	//=========saving images for checking purpose===========
 
 	//recordImageStatus(keypt_arr, descrs);
-    for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++) {
-        vx_size array_len;
-        vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &array_len, sizeof(vx_size));
-	    printf("found %d keypoints at layer %d\n", (int)array_len, k);
-    }  
-    //fclose(in);
+	for (int k = 0; k < (OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2)); k++) {
+		vx_size array_len;
+		vxQueryArray(keypt_arr[k], VX_ARRAY_NUMITEMS, &array_len, sizeof(vx_size));
+		printf("found %d keypoints at layer %d\n", (int)array_len, k);
+	}
+    	//fclose(in);
 
 	//release data strutures created
 	vxReleaseScalar(&scalar1);
