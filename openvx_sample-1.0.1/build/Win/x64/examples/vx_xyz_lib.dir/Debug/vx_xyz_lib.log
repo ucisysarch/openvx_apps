@@ -1,10 +1,13 @@
-﻿Build started 2016-08-22 오전 11:23:01.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" on node 4 (Build target(s)).
-     1>Lib:
+﻿Build started 2016-08-22 오전 10:39:12.
+     1>Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include" /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\examples" /Zi /nologo /W3 /WX- /Od /Ob0 /Oi /D WIN32 /D _WINDOWS /D WINDOWS_ENABLE_CPLUSPLUS /D _DEBUG /D _DEBUG /D WIN32 /D _WIN32 /D ARCH_64 /D _CRT_SECURE_NO_WARNINGS=1 /D OPENVX_BUILDING /D OPENVX_USE_SMP /D TARGET_NUM_CORES=4 /D "VX_API_ENTRY=__declspec(dllexport)" /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"vx_xyz_lib.dir\Debug\\" /Fd"vx_xyz_lib.dir\Debug\vc120.pdb" /Gd /TC /errorReport:prompt "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\examples\vx_xyz_lib.c"
+         vx_xyz_lib.c
+       Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\vx_xyz_lib.lib" /NOLOGO /MACHINE:X64  /machine:x64 vx_xyz_lib.dir\Debug\vx_xyz_lib.obj
          vx_xyz_lib.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\vx_xyz_lib.lib
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.69
+Time Elapsed 00:00:00.86

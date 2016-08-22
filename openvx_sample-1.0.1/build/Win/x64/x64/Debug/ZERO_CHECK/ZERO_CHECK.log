@@ -1,33 +1,5 @@
-﻿Build started 2016-08-22 오전 11:22:57.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\ZERO_CHECK.vcxproj" on node 2 (Build target(s)).
-     1>CustomBuild:
-         Checking Build System
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/debug/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/examples/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/helper/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/kernels/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/kernels/c_model/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/kernels/debug/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/kernels/extras/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/extras/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/opencl/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/openmp/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/sift/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/tests/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/vxu/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/tools/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/tools/pgm2hdr/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/tools/query/CMakeFiles/generate.stamp is up-to-date.
-         CMake does not need to re-run because C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/include/CMakeFiles/generate.stamp is up-to-date.
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\ZERO_CHECK.vcxproj" (Build target(s)).
+﻿Build started 2016-08-20 오전 10:12:02.
 
 Build succeeded.
 
-Time Elapsed 00:00:00.66
+Time Elapsed 00:00:00.38

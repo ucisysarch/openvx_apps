@@ -10,57 +10,38 @@
 #define MAX_KEYPOINTS_PER_THREE_DOGS 200
 
 //valuables for custom convoution
-static const vx_uint32 gaussian5x5scale = 256;
-static const vx_uint32 gaussian7x7scale = 1024;
-static const vx_uint32 gaussian9x9scale = 65536;
-static const vx_uint32 gaussian11x11scale = 2097152;
+static const vx_uint32 gaussian1Scale = 1024;
+static const vx_uint32 gaussian2Scale = 1024;
+static const vx_uint32 gaussian3Scale = 1024;
+static const vx_uint32 gaussian4Scale = 8192;
 
 //make convolution mask using pibonachi
-static vx_int16 gaussian5x5[5][5] =
+static vx_int16 gaussian1[3][3] =
 {
-	{ 1, 4, 6, 4, 1 },
-	{ 4, 16, 24, 16, 4 },
-	{ 6, 24, 36, 24, 6 },
-	{ 4, 16, 24, 16, 4 },
-	{ 1, 4, 6, 4, 1 }
+	{ 99, 120, 99 },
+	{ 120, 148, 120 },
+	{ 99, 120, 99 },
 };
 
-static const vx_int16 gaussian7x7[7][7] =
+static vx_int16 gaussian2[3][3] =
 {
-	{ 1, 4, 6, 10, 6, 4, 1 },
-	{ 4, 16, 24, 40, 24, 16, 4 },
-	{ 6, 24, 36, 60, 36, 24, 6 },
-	{ 10, 40, 60, 100, 60, 40, 10 },
-	{ 6, 24, 36, 60, 36, 24, 6 },
-	{ 4, 16, 24, 40, 24, 16, 4 },
-	{ 1, 4, 6, 10, 6, 4, 1 },
+	{ 111, 115, 111 },
+	{ 115, 120, 115 },
+	{ 111, 115, 111 },
 };
 
-static const vx_int16 gaussian9x9[9][9] =
+static vx_int16 gaussian3[3][3] =
 {
-	{ 1, 8, 28, 56, 70, 56, 28, 8, 1 },
-	{ 8, 64, 244, 488, 560, 448, 224, 64, 8 },
-	{ 28, 244, 784, 1568, 1960, 1568, 784, 224, 28 },
-	{ 56, 448, 1568, 3136, 3920, 3136, 1568, 448, 56 },
-	{ 70, 560, 1960, 3920, 4900, 3920, 1960, 560, 70 },
-	{ 56, 448, 1568, 3136, 3920, 3136, 1568, 448, 56 },
-	{ 28, 224, 784, 1568, 1960, 1568, 784, 224, 28 },
-	{ 8, 64, 224, 448, 560, 448, 224, 64, 8 },
-	{ 1, 8, 28, 56, 70, 56, 28, 8, 1 }
+	{ 113, 114, 113 },
+	{ 114, 116, 114 },
+	{ 113, 114, 113 },
 };
-static const vx_int16 gaussian11x11[11][11] =
+
+static vx_int16 gaussian4[3][3] =
 {
-	{ 1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1 },
-	{ 10, 100, 450, 1200, 2100, 25200, 2100, 1200, 450, 100, 10 },
-	{ 45, 450, 2025, 5400, 9450, 11340, 9450, 5400, 2025, 450, 45 },
-	{ 120, 1200, 5400, 14400, 25200, 30240, 25200, 14400, 5400, 1200, 120 },
-	{ 210, 2100, 9450, 25200, 44100, 52920, 44100, 25200, 9450, 2100, 210 },
-	{ 252, 2520, 11340, 30240, 52920, 63504, 52920, 30240, 11340, 2520, 252 },
-	{ 210, 2100, 9450, 25200, 44100, 52920, 44100, 25200, 9450, 2100, 210 },
-	{ 120, 1200, 5400, 14400, 25200, 30240, 25200, 14400, 5400, 1200, 120 },
-	{ 45, 450, 2025, 5400, 9450, 11340, 9450, 5400, 2025, 450, 45 },
-	{ 10, 100, 450, 1200, 2100, 25200, 2100, 1200, 450, 100, 10 },
-	{ 1, 10, 45, 120, 210, 252, 210, 120, 45, 10, 1 },
+	{ 909, 911, 909 },
+	{ 911, 912, 911 },
+	{ 909, 911, 909 },
 };
 
 //initialize custom convolvution.
@@ -71,29 +52,29 @@ static vx_convolution vxCreateGaussianConvolution(vx_context context, vx_int16 n
 
 	switch (num)
 	{
-	case 5:
-		conv = vxCreateConvolution(context, 5, 5);
+	case 1:
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian5x5);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian5x5scale, sizeof(vx_uint32));
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian1);
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian1Scale, sizeof(vx_uint32));
 		break;
-	case 7:
-		conv = vxCreateConvolution(context, 7, 7);
+	case 2:
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian7x7);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian7x7scale, sizeof(vx_uint32));
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian2);
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian2Scale, sizeof(vx_uint32));
 		break;
-	case 9:
-		conv = vxCreateConvolution(context, 9, 9);
+	case 3:
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian9x9);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian9x9scale, sizeof(vx_uint32));
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian3);
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian3Scale, sizeof(vx_uint32));
 		break;
-	case 11:
-		conv = vxCreateConvolution(context, 11, 11);
+	case 4:
+		conv = vxCreateConvolution(context, 3, 3);
 		vxAccessConvolutionCoefficients(conv, NULL);
-		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian11x11);
-		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian11x11scale, sizeof(vx_uint32));
+		vxCommitConvolutionCoefficients(conv, (vx_int16*)gaussian4);
+		status = vxSetConvolutionAttribute(conv, VX_CONVOLUTION_ATTRIBUTE_SCALE, (void *)&gaussian4Scale, sizeof(vx_uint32));
 		break;
 	default:
 		break;
@@ -234,7 +215,7 @@ void saveimage(char* imgname, vx_image* img)
 	vxQueryImage((*img), VX_IMAGE_ATTRIBUTE_WIDTH, &w, sizeof(w));
 	vxQueryImage((*img), VX_IMAGE_ATTRIBUTE_HEIGHT, &h, sizeof(h));
 	printf("%s %d %d>>>>\n", imgname, w, h);
-	
+
 	//Set patch we are going to access from (0,0) to (width, height). This stands for entire image.
 	vx_rectangle_t imrect;
 	imrect.start_x = imrect.start_y = 0;
@@ -292,7 +273,7 @@ int main(int argc, char* argv[])
 		for (int x = 0; x<width; x++)
 			fscanf(in, "%c", &bytes[(y*width) + x]);
 
-	
+
 
 	//Image reference for loading external image onto vximage
 	vx_imagepatch_addressing_t addrs[] = {
@@ -534,7 +515,7 @@ int main(int argc, char* argv[])
 
 	//=========saving images for checking purpose===========
 
-
+	recordImageStatus(keypt_arr, descrs);
 	fclose(in);
 
 	//release data strutures created

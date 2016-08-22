@@ -38,12 +38,12 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 	{
 		//parameters
 		vx_image mag = (vx_image)parameters[0];
-		vx_image prev = (vx_image)parameters[0];
-		vx_image curr = (vx_image)parameters[1];
-		vx_image next = (vx_image)parameters[2];
-		vx_scalar octave = (vx_scalar)parameters[3];
-		vx_scalar maximum = (vx_scalar)parameters[4];
-		vx_array arr = (vx_array)parameters[5];
+		vx_image prev = (vx_image)parameters[1];
+		vx_image curr = (vx_image)parameters[2];
+		vx_image next = (vx_image)parameters[3];
+		vx_scalar octave = (vx_scalar)parameters[4];
+		vx_scalar maximum = (vx_scalar)parameters[5];
+		vx_array arr = (vx_array)parameters[6];
 
 		vx_coordinates2d_t foundKey;
 
@@ -209,6 +209,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 						foundKey.y = (vx_uint32)r;
 
 						vx_status stt = vxAddArrayItems(arr, 1, &foundKey, sizeof(vx_coordinates2d_t));
+						
 						/*
 						switch (stt)
 						{

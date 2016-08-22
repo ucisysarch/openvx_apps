@@ -1,12 +1,9 @@
-﻿Build started 2016-08-22 오전 11:23:02.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\xyz.vcxproj" on node 4 (Build target(s)).
+﻿Build started 2016-08-22 오전 11:41:39.
+     1>Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\xyz.vcxproj" on node 3 (Build target(s)).
      1>Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\xyz.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\sample\framework\Debug\openvx.lib "..\helper\Debug\openvx-helper.lib" ..\debug\Debug\vx_debug.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCPMT /DEF:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/examples/xyz.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/examples/Debug/xyz.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/examples/Debug/xyz.lib" /MACHINE:X64 /DLL xyz.dir\Debug\vx_xyz_module.obj
-     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
-            Creating library C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/examples/Debug/xyz.lib and object C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/examples/Debug/xyz.exp
          xyz.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\xyz.dll
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\xyz.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\xyz.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.22
+Time Elapsed 00:00:00.41

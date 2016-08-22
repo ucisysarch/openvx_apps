@@ -1,5 +1,5 @@
-﻿Build started 2016-08-22 오전 11:23:59.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\INSTALL.vcxproj" on node 4 (Build target(s)).
+﻿Build started 2016-08-22 오후 12:05:47.
+     1>Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\INSTALL.vcxproj" on node 4 (Build target(s)).
      1>PostBuildEvent:
          setlocal
          "C:\Program Files\CMake\bin\cmake.exe" -DBUILD_TYPE=Debug -P cmake_install.cmake
@@ -38,28 +38,28 @@
          -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vxu.dll
          -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/pgm2hdr.exe
          -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_query.exe
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vxu.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_api.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_ext_target.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_helper.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_kernels.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_dot.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_interp.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_node_memory.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_opencl.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_tiling.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_variants.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_xml.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_debug.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_extras.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_xyz.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_nodes.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_types.h
-         -- Up-to-date: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_vendors.h
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\INSTALL.vcxproj" (Build target(s)).
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vxu.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_api.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_ext_target.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_helper.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_kernels.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_dot.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_interp.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_node_memory.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_opencl.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_tiling.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_variants.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_xml.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_debug.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_extras.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_xyz.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_nodes.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_types.h
+         -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_vendors.h
+     1>Done Building Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\INSTALL.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.95
+Time Elapsed 00:00:00.86

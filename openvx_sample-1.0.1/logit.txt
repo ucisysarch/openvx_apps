@@ -1,0 +1,71 @@
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64
+
+Microsoft Visual Studio 2013 Version 12.0.31101.0.
+Copyright (C) Microsoft Corp. All rights reserved.
+1>------ Build started: Project: with_graph, Configuration: Debug x64 ------
+2>------ Build started: Project: openvx-c_model, Configuration: Debug x64 ------
+1>  with_graph.cpp
+1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift\with_graph.cpp(235): warning C4018: '<' : signed/unsigned mismatch
+1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift\with_graph.cpp(237): warning C4018: '<' : signed/unsigned mismatch
+2>  vx_calcsiftgradient.c
+1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+2>  vx_findsiftkeypoint.c
+1>  with_graph.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\sift\Debug\with_graph.exe
+2>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_findsiftkeypoint.c(284): warning C4554: '|' : check operator precedence for possible error; use parentheses to clarify precedence
+2>  Generating Code...
+2>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+2>     Creating library C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.lib and object C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.exp
+2>  openvx-c_model.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\Debug\openvx-c_model.dll
+3>------ Build started: Project: INSTALL, Configuration: Debug x64 ------
+3>  -- Install configuration: "Debug"
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_debug.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_xyz_lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/xyz.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/xyz.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_example.exe
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_example_code.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-helper.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-c_model-lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-debug_k-lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-extras_k-lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-debug-lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-debug.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-debug.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-extras-lib.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-extras.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-extras.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/lib/openvx.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/lib/openvx-c_model.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/openvx-c_model.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/with_graph.exe
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_test.exe
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/lib/vxu.lib
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vxu.dll
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/pgm2hdr.exe
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/bin/vx_query.exe
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vxu.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_api.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_ext_target.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_helper.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_kernels.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_dot.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_interp.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_node_memory.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_opencl.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_tiling.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_variants.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_khr_xml.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_debug.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_extras.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_lib_xyz.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_nodes.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_types.h
+3>  -- Installing: C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/install/Win/x64/Debug/include/VX/vx_vendors.h
+========== Build: 3 succeeded, 0 failed, 20 up-to-date, 0 skipped ==========
+cmake C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\install\Win\x64\${BUILD_TYPE} -DBUILD_X64=1 -G "Visual Studio 12 Win64" 
+DEVENV OpenVX.sln /build Debug /project INSTALL

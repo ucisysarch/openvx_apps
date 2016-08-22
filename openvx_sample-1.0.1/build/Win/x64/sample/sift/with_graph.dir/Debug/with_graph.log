@@ -1,11 +1,16 @@
-﻿Build started 2016-08-22 오전 11:23:55.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\sift\with_graph.vcxproj" on node 3 (Build target(s)).
-     1>Link:
+﻿Build started 2016-08-22 오후 12:05:43.
+     1>Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\sift\with_graph.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include" /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift" /Zi /nologo /W3 /WX- /Od /Ob0 /Oi /D WIN32 /D _WINDOWS /D WINDOWS_ENABLE_CPLUSPLUS /D _DEBUG /D _DEBUG /D WIN32 /D _WIN32 /D ARCH_64 /D _CRT_SECURE_NO_WARNINGS=1 /D OPENVX_BUILDING /D OPENVX_USE_SMP /D TARGET_NUM_CORES=4 /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"with_graph.dir\Debug\\" /Fd"with_graph.dir\Debug\vc120.pdb" /Gd /TP /errorReport:prompt "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift\with_graph.cpp"
+         with_graph.cpp
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift\with_graph.cpp(235): warning C4018: '<' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\sift\with_graph.cpp(237): warning C4018: '<' : signed/unsigned mismatch
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\sift\Debug\with_graph.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\..\examples\Debug\vx_xyz_lib.lib "..\..\libraries\debug\Debug\openvx-debug-lib.lib" "..\..\libraries\extras\Debug\openvx-extras-lib.lib" "..\..\helper\Debug\openvx-helper.lib" ..\vxu\Debug\vxu.lib ..\framework\Debug\openvx.lib "..\..\helper\Debug\openvx-helper.lib" ..\..\debug\Debug\vx_debug.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCPMT /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/sift/Debug/with_graph.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/sift/Debug/with_graph.lib" /MACHINE:X64 with_graph.dir\Debug\with_graph.obj
      1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
          with_graph.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\sift\Debug\with_graph.exe
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\sift\with_graph.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\sift\with_graph.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.22
+Time Elapsed 00:00:02.40

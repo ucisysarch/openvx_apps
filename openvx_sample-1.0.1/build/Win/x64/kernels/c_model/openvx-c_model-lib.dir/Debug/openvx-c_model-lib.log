@@ -1,6 +1,45 @@
-﻿Build started 2016-08-22 오전 11:23:01.
-     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\openvx-c_model-lib.vcxproj" on node 5 (Build target(s)).
-     1>Lib:
+﻿Build started 2016-08-22 오전 10:39:11.
+     1>Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\openvx-c_model-lib.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug" /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include" /I"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model" /Zi /nologo /W3 /WX- /Od /Ob0 /Oi /D WIN32 /D _WINDOWS /D WINDOWS_ENABLE_CPLUSPLUS /D _DEBUG /D _DEBUG /D WIN32 /D _WIN32 /D ARCH_64 /D _CRT_SECURE_NO_WARNINGS=1 /D OPENVX_BUILDING /D OPENVX_USE_SMP /D TARGET_NUM_CORES=4 /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"openvx-c_model-lib.dir\Debug\\" /Fd"openvx-c_model-lib.dir\Debug\vc120.pdb" /Gd /TC /errorReport:prompt "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_absdiff.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_accumulate.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_addsub.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_bitwise.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_channel.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_conv3x3.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convertcolor.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convertdepth.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convolve.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_fast9.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_filter.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_histogram.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_integralimage.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_lut.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_magnitude.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_morphology.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_multiply.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_optpyrlk.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_phase.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_sobel3x3.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_statistics.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_threshold.c" "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_warp.c"
+         c_absdiff.c
+         c_accumulate.c
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_accumulate.c(84): warning C4244: '=' : conversion from 'vx_uint16' to 'vx_uint8', possible loss of data
+         c_addsub.c
+         c_bitwise.c
+         c_channel.c
+         c_conv3x3.c
+         c_convertcolor.c
+         c_convertdepth.c
+         c_convolve.c
+         c_fast9.c
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_fast9.c(108): warning C4018: '>=' : signed/unsigned mismatch
+         c_filter.c
+         c_histogram.c
+         c_integralimage.c
+         c_lut.c
+         c_magnitude.c
+         c_morphology.c
+         c_multiply.c
+         c_optpyrlk.c
+         c_phase.c
+         c_scale.c
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(43): warning C4018: '>=' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(58): warning C4018: '>=' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(59): warning C4018: '>=' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(98): warning C4018: '<' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(100): warning C4018: '<' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(154): warning C4018: '<' : signed/unsigned mismatch
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c(156): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
+         Compiling...
+         c_sobel3x3.c
+         c_statistics.c
+         c_threshold.c
+         c_warp.c
+     1>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_warp.c(132): warning C4244: '=' : conversion from 'vx_float32' to 'vx_uint8', possible loss of data
+         Generating Code...
+       Lib:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\Debug\openvx-c_model-lib.lib" /NOLOGO /MACHINE:X64  /machine:x64 "openvx-c_model-lib.dir\Debug\c_absdiff.obj"
          "openvx-c_model-lib.dir\Debug\c_accumulate.obj"
          "openvx-c_model-lib.dir\Debug\c_addsub.obj"
@@ -26,8 +65,8 @@
          "openvx-c_model-lib.dir\Debug\c_threshold.obj"
          "openvx-c_model-lib.dir\Debug\c_warp.obj"
          openvx-c_model-lib.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\Debug\openvx-c_model-lib.lib
-     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\openvx-c_model-lib.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\kernels\c_model\openvx-c_model-lib.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.69
+Time Elapsed 00:00:04.51
