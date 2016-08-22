@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\examples\vx_xyz_module.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\examples\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\examples\xyz.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9265EA98-14FA-317D-A1ED-0C54A31AAABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

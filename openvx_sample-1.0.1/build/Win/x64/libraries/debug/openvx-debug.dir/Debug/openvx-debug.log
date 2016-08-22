@@ -1,0 +1,17 @@
+﻿Build started 2016-08-22 오전 11:23:01.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\libraries\debug\openvx-debug.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\libraries\debug\Debug\openvx-debug.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "..\..\helper\Debug\openvx-helper.lib" "..\..\kernels\debug\Debug\openvx-debug_k-lib.lib" ..\..\sample\framework\Debug\openvx.lib "..\..\helper\Debug\openvx-helper.lib" ..\..\debug\Debug\vx_debug.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCPMT /DEF:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/libraries/debug/openvx-debug.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/Debug/openvx-debug.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/Debug/openvx-debug.lib" /MACHINE:X64 /DLL "openvx-debug.dir\Debug\vx_check.obj"
+         "openvx-debug.dir\Debug\vx_compare.obj"
+         "openvx-debug.dir\Debug\vx_copy.obj"
+         "openvx-debug.dir\Debug\vx_debug_module.obj"
+         "openvx-debug.dir\Debug\vx_file.obj"
+         "openvx-debug.dir\Debug\vx_fill.obj"
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+            Creating library C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/Debug/openvx-debug.lib and object C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/Debug/openvx-debug.exp
+         openvx-debug.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\libraries\debug\Debug\openvx-debug.dll
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\libraries\debug\openvx-debug.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.47

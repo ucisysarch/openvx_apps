@@ -163,7 +163,6 @@ EXPORTS
 ;    vxSobel3x3Node
 ;    vxSubtractNode
 ;    vxThresholdNode
-;    vxVerifyKeypointNode
 ;    vxWarpAffineNode
 ;    vxWarpPerspectiveNode
 ;    vxXorNode

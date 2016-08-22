@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_absdiff.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_accumulate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_addsub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_bitwise.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_calcsiftgradient.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_canny.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_channelcombine.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_channelextract.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_colorconvert.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_convertdepth.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_convolution.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_fast9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_filter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_findsiftkeypoint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_gradients.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_harris.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_histogram.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_integralimage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_interface.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_lut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_magnitude.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_meanstddev.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_minmaxloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_morphology.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_multiply.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_optpyrlk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_phase.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_pyramid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_remap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_scale.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_threshold.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_warp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\openvx-target.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9265EA98-14FA-317D-A1ED-0C54A31AAABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

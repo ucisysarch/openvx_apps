@@ -72,7 +72,6 @@ extern vx_kernel_description_t optpyrlk_kernel;
 extern vx_kernel_description_t remap_kernel;
 extern vx_kernel_description_t halfscale_gaussian_kernel;
 extern vx_kernel_description_t findsiftkeypoint_kernel;
-extern vx_kernel_description_t verifykeypoint_kernel;
 extern vx_kernel_description_t calcsiftgradient_kernel;
 
 #endif

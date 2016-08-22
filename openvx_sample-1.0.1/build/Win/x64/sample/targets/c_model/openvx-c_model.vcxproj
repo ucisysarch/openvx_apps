@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{024E0D39-D5BA-3203-A051-92E71BB0DBC5}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>openvx-c_model</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">openvx-c_model.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">openvx-c_model</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">openvx-c_model.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">openvx-c_model</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WINDOWS_ENABLE_CPLUSPLUS;_DEBUG;_DEBUG;WIN32;_WIN32;ARCH_64;_CRT_SECURE_NO_WARNINGS=1;OPENVX_BUILDING;OPENVX_USE_SMP;TARGET_NUM_CORES=4;CMAKE_INTDIR="Debug";openvx_c_model_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WINDOWS_ENABLE_CPLUSPLUS;_DEBUG;_DEBUG;WIN32;_WIN32;ARCH_64;_CRT_SECURE_NO_WARNINGS=1;OPENVX_BUILDING;OPENVX_USE_SMP;TARGET_NUM_CORES=4;CMAKE_INTDIR=\"Debug\";openvx_c_model_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\libraries\debug\Debug\openvx-debug-lib.lib;..\..\..\libraries\extras\Debug\openvx-extras-lib.lib;..\..\..\helper\Debug\openvx-helper.lib;..\..\..\kernels\c_model\Debug\openvx-c_model-lib.lib;..\..\vxu\Debug\vxu.lib;..\..\framework\Debug\openvx.lib;..\..\..\helper\Debug\openvx-helper.lib;..\..\..\debug\Debug\vx_debug.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCPMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/openvx-target.def</ModuleDefinitionFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WINDOWS_ENABLE_CPLUSPLUS;NDEBUG;NDEBUG;WIN32;_WIN32;ARCH_64;_CRT_SECURE_NO_WARNINGS=1;OPENVX_BUILDING;OPENVX_USE_SMP;TARGET_NUM_CORES=4;CMAKE_INTDIR="Release";openvx_c_model_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;WINDOWS_ENABLE_CPLUSPLUS;NDEBUG;NDEBUG;WIN32;_WIN32;ARCH_64;_CRT_SECURE_NO_WARNINGS=1;OPENVX_BUILDING;OPENVX_USE_SMP;TARGET_NUM_CORES=4;CMAKE_INTDIR=\"Release\";openvx_c_model_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\debug;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\..\..\include;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\..\..\libraries\debug\Release\openvx-debug-lib.lib;..\..\..\libraries\extras\Release\openvx-extras-lib.lib;..\..\..\helper\Release\openvx-helper.lib;..\..\..\kernels\c_model\Release\openvx-c_model-lib.lib;..\..\vxu\Release\vxu.lib;..\..\framework\Release\openvx.lib;..\..\..\helper\Release\openvx-helper.lib;..\..\..\debug\Release\vx_debug.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD;LIBCPMTD;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Release/openvx-c_model.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/openvx-target.def</ModuleDefinitionFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ProgramDataBaseFile>C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Release/openvx-c_model.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/samsung/Desktop/vision/openvx_sample-1.0.1 -BC:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64 --check-stamp-file C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/CMakeLists.txt;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/samsung/Desktop/vision/openvx_sample-1.0.1 -BC:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64 --check-stamp-file C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/CMakeLists.txt;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt;C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_absdiff.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_accumulate.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_addsub.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_bitwise.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_calcsiftgradient.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_canny.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_channelcombine.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_channelextract.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_colorconvert.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_convertdepth.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_convolution.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_fast9.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_filter.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_findsiftkeypoint.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_gradients.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_harris.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_histogram.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_integralimage.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_interface.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_lut.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_magnitude.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_meanstddev.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_minmaxloc.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_morphology.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_multiply.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_optpyrlk.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_phase.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_pyramid.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_remap.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_scale.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_threshold.c"  />
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\vx_warp.c"  />
+    <None Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\targets\c_model\openvx-target.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/ZERO_CHECK.vcxproj">
+      <Project>68A505EC-8AE3-3FDB-9B15-64465F4A219D</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/openvx.vcxproj">
+      <Project>962DA354-03E7-3F54-8A45-DDA4BEE4285B</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/kernels/c_model/openvx-c_model-lib.vcxproj">
+      <Project>B18C6171-7BD8-30A8-894A-99B64D6FD2F4</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/debug/openvx-debug-lib.vcxproj">
+      <Project>ECA720F8-A685-331A-B890-BEEEAC610AD1</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/libraries/extras/openvx-extras-lib.vcxproj">
+      <Project>2EAD12EC-BA9A-3D70-95B4-F5788635B80F</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/helper/openvx-helper.vcxproj">
+      <Project>F1FDF4ED-EF81-3FDB-BBDA-344AC7E9A554</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/debug/vx_debug.vcxproj">
+      <Project>C21E967D-D292-3BF5-A8BF-CDF4CD914F13</Project>
+    </ProjectReference>
+    <ProjectReference Include="C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/vxu/vxu.vcxproj">
+      <Project>6D2DC540-478E-3CDA-BB76-36A01E5E29CC</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

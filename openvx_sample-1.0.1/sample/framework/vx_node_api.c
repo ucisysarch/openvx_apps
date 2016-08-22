@@ -673,13 +673,14 @@ VX_API_ENTRY vx_node VX_API_CALL vxHalfScaleGaussianNode(vx_graph graph, vx_imag
 
 
 //VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph,	vx_reference DOG_pyramid, vx_array keypointarr)
-VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image prev, vx_image curr, vx_image next, vx_int32 octave, 
+VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image mag, vx_image prev, vx_image curr, vx_image next, vx_int32 octave, 
 	vx_int32 maximum, vx_array arr)
 {
 	vx_scalar octa = vxCreateScalar(vxGetContext((vx_reference)graph), VX_TYPE_INT32, &octave);
 	vx_scalar maxi = vxCreateScalar(vxGetContext((vx_reference)graph), VX_TYPE_INT32, &maximum);
 
 	vx_reference params[] = {
+		(vx_reference)mag,
 		(vx_reference)prev,
 		(vx_reference)curr,
 		(vx_reference)next,
@@ -695,28 +696,6 @@ VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image
 }
 
 
-VX_API_ENTRY vx_node VX_API_CALL vxVerifyKeypointNode(vx_graph graph, vx_array before, vx_image mag, vx_int32 w, vx_int32 h,
-	vx_int32 maximum, vx_array after, vx_image keyptimg)
-{
-	vx_scalar width = vxCreateScalar(vxGetContext((vx_reference)graph), VX_TYPE_INT32, &w);
-	vx_scalar height = vxCreateScalar(vxGetContext((vx_reference)graph), VX_TYPE_INT32, &h);
-	vx_scalar maxi = vxCreateScalar(vxGetContext((vx_reference)graph), VX_TYPE_INT32, &maximum);
-
-	vx_reference params[] = {
-		(vx_reference)before,
-		(vx_reference)mag,
-		(vx_reference)width,
-		(vx_reference)height,
-		(vx_reference)maxi,
-		(vx_reference)after,
-		(vx_reference)keyptimg,
-	};
-	vx_node node = vxCreateNodeByStructure(graph,
-		VX_KERNEL_VERIFYKEYPOINT,
-		params,
-		dimof(params));
-	return node;
-}
 
 
 VX_API_ENTRY vx_node VX_API_CALL vxCalcSiftGradientNode(vx_graph graph, vx_image orient, vx_image magni, vx_array keypt, vx_array descr)
@@ -728,7 +707,7 @@ VX_API_ENTRY vx_node VX_API_CALL vxCalcSiftGradientNode(vx_graph graph, vx_image
 		(vx_reference)descr,
 	};
 	vx_node node = vxCreateNodeByStructure(graph,
-		VX_KERNEL_VERIFYKEYPOINT,
+		VX_KERNEL_CALCSIFTGRADIENT,
 		params,
 		dimof(params));
 	return node;

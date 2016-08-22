@@ -36,7 +36,6 @@ EXPORTS
 ;    vxuSobel3x3
 ;    vxuSubtract
 ;    vxuThreshold
-;    vxuVerifyKeypoint
 ;    vxuWarpAffine
 ;    vxuWarpPerspective
 ;    vxuXor

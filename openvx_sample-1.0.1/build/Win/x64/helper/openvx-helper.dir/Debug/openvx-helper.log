@@ -1,0 +1,10 @@
+﻿Build started 2016-08-22 오전 11:22:58.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\helper\openvx-helper.vcxproj" on node 3 (Build target(s)).
+     1>Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\helper\Debug\openvx-helper.lib" /NOLOGO /MACHINE:X64  /machine:x64 "openvx-helper.dir\Debug\vx_helper.obj"
+         openvx-helper.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\helper\Debug\openvx-helper.lib
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\helper\openvx-helper.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.87

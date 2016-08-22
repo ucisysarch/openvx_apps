@@ -654,24 +654,8 @@ VX_API_ENTRY vx_node VX_API_CALL vxHalfScaleGaussianNode(vx_graph graph, vx_imag
 * \retval 0 Node could not be created.
 * \retval * Node handle.
 */
-VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image prev, vx_image curr, vx_image next,
+VX_API_ENTRY vx_node VX_API_CALL vxFindSiftKeypointNode(vx_graph graph, vx_image mag, vx_image prev, vx_image curr, vx_image next,
 	vx_int32 octave, vx_int32 maximum, vx_array arr);
-
-
-/*! \brief [Graph] Pick keypoints using SIFT feature algorithms.
-* \details will add keypoint (x, y, o, scale) to keypointarr.
-* \param [in] graph The reference to the graph.
-* \param [in] array The input keypoints
-* \param [in] image The input x
-* \param [in] image The input y
-* \param [out] array2 recently verified keypoints
-* \ingroup group_verify_keypoint
-* \return <tt>\ref vx_node</tt>.
-* \retval 0 Node could not be created.
-* \retval * Node handle.
-*/
-VX_API_ENTRY vx_node VX_API_CALL vxVerifyKeypointNode(vx_graph graph, vx_array before, vx_image mag, vx_int32 w, vx_int32 h, vx_int32 maximum, vx_array after, vx_image keyptimg);
-
 
 
 /*! \brief [Graph] Pick keypoints using SIFT feature algorithms.

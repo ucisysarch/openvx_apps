@@ -1,0 +1,10 @@
+﻿Build started 2016-08-22 오전 11:23:00.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\libraries\extras\openvx-extras-lib.vcxproj" on node 5 (Build target(s)).
+     1>Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\libraries\extras\Debug\openvx-extras-lib.lib" /NOLOGO /MACHINE:X64  /machine:x64 "openvx-extras-lib.dir\Debug\vx_extras_lib.obj"
+         openvx-extras-lib.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\libraries\extras\Debug\openvx-extras-lib.lib
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\libraries\extras\openvx-extras-lib.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.54

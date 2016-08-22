@@ -115,7 +115,6 @@ static vx_kernel_description_t *target_kernels[] = {
     &remap_kernel,
     &halfscale_gaussian_kernel,
 	&findsiftkeypoint_kernel,
-	&verifykeypoint_kernel,
 	&calcsiftgradient_kernel,
 };
 

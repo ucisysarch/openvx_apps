@@ -1,0 +1,43 @@
+﻿Build started 2016-08-22 오전 11:23:55.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\openvx-c_model.vcxproj" on node 5 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\Debug\openvx-c_model.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "..\..\..\libraries\debug\Debug\openvx-debug-lib.lib" "..\..\..\libraries\extras\Debug\openvx-extras-lib.lib" "..\..\..\helper\Debug\openvx-helper.lib" "..\..\..\kernels\c_model\Debug\openvx-c_model-lib.lib" ..\..\vxu\Debug\vxu.lib ..\..\framework\Debug\openvx.lib "..\..\..\helper\Debug\openvx-helper.lib" ..\..\..\debug\Debug\vx_debug.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCPMT /DEF:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/targets/c_model/openvx-target.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.lib" /MACHINE:X64 /DLL "openvx-c_model.dir\Debug\vx_absdiff.obj"
+         "openvx-c_model.dir\Debug\vx_accumulate.obj"
+         "openvx-c_model.dir\Debug\vx_addsub.obj"
+         "openvx-c_model.dir\Debug\vx_bitwise.obj"
+         "openvx-c_model.dir\Debug\vx_calcsiftgradient.obj"
+         "openvx-c_model.dir\Debug\vx_canny.obj"
+         "openvx-c_model.dir\Debug\vx_channelcombine.obj"
+         "openvx-c_model.dir\Debug\vx_channelextract.obj"
+         "openvx-c_model.dir\Debug\vx_colorconvert.obj"
+         "openvx-c_model.dir\Debug\vx_convertdepth.obj"
+         "openvx-c_model.dir\Debug\vx_convolution.obj"
+         "openvx-c_model.dir\Debug\vx_fast9.obj"
+         "openvx-c_model.dir\Debug\vx_filter.obj"
+         "openvx-c_model.dir\Debug\vx_findsiftkeypoint.obj"
+         "openvx-c_model.dir\Debug\vx_gradients.obj"
+         "openvx-c_model.dir\Debug\vx_harris.obj"
+         "openvx-c_model.dir\Debug\vx_histogram.obj"
+         "openvx-c_model.dir\Debug\vx_integralimage.obj"
+         "openvx-c_model.dir\Debug\vx_interface.obj"
+         "openvx-c_model.dir\Debug\vx_lut.obj"
+         "openvx-c_model.dir\Debug\vx_magnitude.obj"
+         "openvx-c_model.dir\Debug\vx_meanstddev.obj"
+         "openvx-c_model.dir\Debug\vx_minmaxloc.obj"
+         "openvx-c_model.dir\Debug\vx_morphology.obj"
+         "openvx-c_model.dir\Debug\vx_multiply.obj"
+         "openvx-c_model.dir\Debug\vx_optpyrlk.obj"
+         "openvx-c_model.dir\Debug\vx_phase.obj"
+         "openvx-c_model.dir\Debug\vx_pyramid.obj"
+         "openvx-c_model.dir\Debug\vx_remap.obj"
+         "openvx-c_model.dir\Debug\vx_scale.obj"
+         "openvx-c_model.dir\Debug\vx_threshold.obj"
+         "openvx-c_model.dir\Debug\vx_warp.obj"
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+            Creating library C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.lib and object C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/targets/c_model/Debug/openvx-c_model.exp
+         openvx-c_model.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\Debug\openvx-c_model.dll
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\targets\c_model\openvx-c_model.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.52

@@ -292,15 +292,10 @@ enum vx_kernel_e {
 	*/
 	VX_KERNEL_FINDSIFTKEYPOINT = VX_KERNEL_BASE(VX_ID_KHRONOS, VX_LIBRARY_KHR_BASE) + 0x2A,
 
-	/*! \brief The Verify SIFT Keypoint Kernel.
-	* \see group_verify_keypoint
-	*/
-	VX_KERNEL_VERIFYKEYPOINT = VX_KERNEL_BASE(VX_ID_KHRONOS, VX_LIBRARY_KHR_BASE) + 0x2B,
-
 	/*! \brief The Calc SIFT Gradient Kernel.
 	* \see group_calc_sift_gradient
 	*/
-	VX_KERNEL_CALCSIFTGRADIENT = VX_KERNEL_BASE(VX_ID_KHRONOS, VX_LIBRARY_KHR_BASE) + 0x2C,
+	VX_KERNEL_CALCSIFTGRADIENT = VX_KERNEL_BASE(VX_ID_KHRONOS, VX_LIBRARY_KHR_BASE) + 0x2B,
 
     /* insert new kernels here */
     VX_KERNEL_MAX_1_0, /*!< \internal Used for bounds checking in the conformance test. */

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_edge_trace.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_extras_module.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_filter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_gradients.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_harris_score.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_listers.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_nonmax.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\vx_norm.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\libraries\extras\openvx-extras.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9265EA98-14FA-317D-A1ED-0C54A31AAABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

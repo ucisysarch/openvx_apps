@@ -34,9 +34,10 @@
 
 static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference *parameters, vx_uint32 num)
 {
-	if (num == 6)
+	if (num == 7)
 	{
 		//parameters
+		vx_image mag = (vx_image)parameters[0];
 		vx_image prev = (vx_image)parameters[0];
 		vx_image curr = (vx_image)parameters[1];
 		vx_image next = (vx_image)parameters[2];
@@ -48,27 +49,6 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 
 		//maximum keypoints can be detected for single call of this node amount to 1000
 		int keyptCnt = 0;
-
-		//constants from original openCV SIFT code
-		/*
-		vx_int32 SIFT_FIXPT_SCALE = 48;
-		vx_float32 img_scale = 1.f / (255 * SIFT_FIXPT_SCALE);
-		vx_float32 deriv_scale = img_scale*0.5f;				//img_scale * 0.5
-		vx_float32 second_deriv_scale = img_scale;				//img_scale
-		vx_float32 cross_deriv_scale = img_scale*0.25f;			//img_scale * 0.25
-
-		//solution of matrix equation <xi, xr, xc>
-		//we have to find out those values
-		vx_float32 xi = 0.0f;
-		vx_float32 xr = 0.0f;
-		vx_float32 xc = 0.0f;
-
-		//3d dD vector, right side of matrix equation.
-		vx_float32 dD[3] = { 0.0f, };
-
-		//3*3 Hessian Matrix, left side of matrix equation
-		vx_float33 Hess[3][3] = { .0f, };
-		*/
 
 		//patch for access vx_image curr
 		vx_rectangle_t curr_imrect;
@@ -85,18 +65,18 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vx_uint32 next_plane = 0;
 		vx_imagepatch_addressing_t next_imaddr;
 		void* next_imbaseptr = NULL;
-
-
-		//vx_reference DOG_pyramid_ref = (vx_reference)parameters[0];
-		//vx_image*  DOG_pyramid = (vx_image*)DOG_pyramid_ref;
-		//vx_array keypoints = (vx_array)parameters[1];
+		//patch for access vx_image magnitude
+		vx_rectangle_t mag_imrect;
+		vx_uint32 mag_plane = 0;
+		vx_imagepatch_addressing_t mag_imaddr;
+		void* mag_imbaseptr = NULL;
 
 		//FILE* fff = NULL;
 		//fff = fopen("www.txt", "a+");
 
 		//access to 'curr' vx_image
 		int SIFT_IMG_BORDER = 8;
-		//int VALUE_THRESHOLD = 50;
+		int VALUE_THRESHOLD = 85;
 		int r, c;
 		vx_int32 o;
 
@@ -105,7 +85,13 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 
 
 		//=================BEGIN. assume we're using same size of vx_images as paramters
-		vx_uint32 w, h;	//images' width&height
+		vx_uint32 w, h;						//images' width&height
+		vx_uint32 ori_width, ori_height;	//width and height of original image
+
+		//get width and height from image
+		vxQueryImage(mag, VX_IMAGE_ATTRIBUTE_WIDTH, &ori_width, sizeof(ori_width));
+		vxQueryImage(mag, VX_IMAGE_ATTRIBUTE_HEIGHT, &ori_height, sizeof(ori_height));
+
 		vxQueryImage(curr, VX_IMAGE_ATTRIBUTE_WIDTH, &w, sizeof(w));
 		vxQueryImage(curr, VX_IMAGE_ATTRIBUTE_HEIGHT, &h, sizeof(h));
 
@@ -116,6 +102,8 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		prev_imrect.end_x = w; prev_imrect.end_y = h;
 		next_imrect.start_x = next_imrect.start_y = 0;
 		next_imrect.end_x = w; next_imrect.end_y = h;
+		mag_imrect.start_x = mag_imrect.start_y = 0;
+		mag_imrect.end_x = ori_width; mag_imrect.end_y = ori_height;
 
 
 		vxAccessScalarValue(octave, &o);
@@ -129,6 +117,8 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vxAccessImagePatch(prev, &prev_imrect, prev_plane, &prev_imaddr, &prev_imbaseptr, VX_READ_ONLY);
 		//allowing access to next vx_image layer
 		vxAccessImagePatch(next, &next_imrect, next_plane, &next_imaddr, &next_imbaseptr, VX_READ_ONLY); 
+		//allowing access to mag vx_image layer
+		vxAccessImagePatch(mag, &mag_imrect, mag_plane, &mag_imaddr, &mag_imbaseptr, VX_READ_ONLY);
 
 		//fprintf(fff, "< ");
 
@@ -191,12 +181,19 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 				{
 					//if we found maxima/minima, save the position
 
+					//@@ check if the pixel's magnitude is bigger than threshold or not
+					vx_uint16* pixel_mag = (vx_uint16 *)vxFormatImagePatchAddress2d(mag_imbaseptr, x, y, &mag_imaddr);
 
-					//and next, check if the corresponding pixel is in edge or not
+					//is bigger than threshold magnitude?
+					if ((*pixel_mag) < VALUE_THRESHOLD)
+						continue;
+
+
+					//@@ and next, check if the corresponding pixel is in edge or not
 					vx_int16 d = *currpixel;
-					vx_float32 dxx = (*curr_neighbors[2]) + (*curr_neighbors[6]) - 2 * d;
-					vx_float32 dyy = (*curr_neighbors[0]) + (*curr_neighbors[4]) - 2 * d;
-					vx_float32 dxy = ((*curr_neighbors[1]) - (*curr_neighbors[3]) - (*curr_neighbors[5]) - (*curr_neighbors[7])) / 4.0;
+					vx_float32 dxx = (vx_float32)((*curr_neighbors[2]) + (*curr_neighbors[6]) - 2 * d);
+					vx_float32 dyy = (vx_float32)((*curr_neighbors[0]) + (*curr_neighbors[4]) - 2 * d);
+					vx_float32 dxy = (vx_float32)(((*curr_neighbors[1]) - (*curr_neighbors[3]) - (*curr_neighbors[5]) - (*curr_neighbors[7])) / 4.0);
 
 					vx_float32 tr = dxx + dyy;
 					vx_float32 det = dxx * dyy - dxy * dxy;
@@ -210,14 +207,28 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 						c = c*(1 << o);
 						foundKey.x = (vx_uint32)c;
 						foundKey.y = (vx_uint32)r;
-						vxAddArrayItems(arr, 1, &foundKey, 0);
 
-						//fprintf(fff, "[%d %d]\n", c, r);
+						vx_status stt = vxAddArrayItems(arr, 1, &foundKey, sizeof(vx_coordinates2d_t));
+						/*
+						switch (stt)
+						{
+						case VX_SUCCESS:
+						fprintf(fff, "o[%d %d]\n", c, r);
+						break;
+						case VX_ERROR_INVALID_REFERENCE:
+						fprintf(fff, "x_IR[%d %d]\n", c, r);
+						break;
+						case VX_FAILURE:
+						fprintf(fff, "f[%d %d]\n", c, r);
+						break;
+						case VX_ERROR_INVALID_PARAMETERS:
+						fprintf(fff, "x_IP[%d %d]\n", c, r);
+						break;
+						}
+						*/
 
 						keyptCnt++;
 					}
-
-					//fprintf(fff, "%c", (*ptr2));
 
 					if (keyptCnt >= ((int)MAXIMUM_KEYPOINTS)) break;
 				}
@@ -235,6 +246,8 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 		vxCommitImagePatch(prev, &prev_imrect, prev_plane, &prev_imaddr, prev_imbaseptr);
 		//commit next layer
 		vxCommitImagePatch(next, &next_imrect, next_plane, &next_imaddr, next_imbaseptr);
+		//commit mag layer
+		vxCommitImagePatch(mag, &next_imrect, next_plane, &next_imaddr, next_imbaseptr);
 
 		//vxAccessScalarValue(octave, &o);
 		//fprintf(fff, "received %d as octave\n", o);
@@ -267,7 +280,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointKernel(vx_node node, vx_reference
 static vx_status VX_CALLBACK vxFindSiftKeypointInputValidator(vx_node node, vx_uint32 index)
 {
 	vx_status status = VX_ERROR_INVALID_PARAMETERS;
-	if (index == 0 | index == 1 | index == 2)
+	if (index == 0 | index == 1 | index == 2 | index == 3)
 	{
 		vx_image input = 0;
 		vx_parameter param = vxGetParameterByIndex(node, index);
@@ -292,7 +305,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointInputValidator(vx_node node, vx_u
 		}
 		vxReleaseParameter(&param);
 	}
-	if (index == 3 || index == 4)
+	if (index == 4 || index == 5)
 	{
 
 		vx_parameter param = vxGetParameterByIndex(node, index);
@@ -323,9 +336,9 @@ static vx_status VX_CALLBACK vxFindSiftKeypointOutputValidator(vx_node node, vx_
 {
 
 	vx_status status = VX_ERROR_INVALID_PARAMETERS;
-	if (index == 5)
+	if (index == 6)
 	{
-		vx_parameter param = vxGetParameterByIndex(node, 4);
+		vx_parameter param = vxGetParameterByIndex(node, 5);
 
 		if (param)
 		{
@@ -352,6 +365,7 @@ static vx_status VX_CALLBACK vxFindSiftKeypointOutputValidator(vx_node node, vx_
 
 
 static vx_param_description_t findsiftkeypoint_kernel_params[] = {
+	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },
 	{ VX_INPUT, VX_TYPE_IMAGE, VX_PARAMETER_STATE_REQUIRED },

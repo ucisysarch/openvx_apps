@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_absdiff.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_accumulate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_addsub.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_bitwise.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_channel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_conv3x3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convertcolor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convertdepth.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_convolve.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_fast9.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_filter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_histogram.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_integralimage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_lut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_magnitude.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_morphology.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_multiply.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_optpyrlk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_phase.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_scale.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_sobel3x3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_statistics.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_threshold.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\c_warp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\kernels\c_model\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9265EA98-14FA-317D-A1ED-0C54A31AAABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

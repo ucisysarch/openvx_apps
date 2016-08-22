@@ -967,13 +967,13 @@ VX_API_ENTRY vx_status VX_API_CALL vxuRemap(vx_context context, vx_image input, 
 
 /*VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context,
 	vx_reference DOG_pyramid, vx_array keypointarr)*/
-VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_image prev, vx_image curr, vx_image next, vx_int32 octave, vx_int32 maximum, vx_array arr)
+VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_image mag, vx_image prev, vx_image curr, vx_image next, vx_int32 octave, vx_int32 maximum, vx_array arr)
 {
 	vx_status status = VX_FAILURE;
 	vx_graph graph = vxCreateGraph(context);
 	if (graph)
 	{
-		vx_node node = vxFindSiftKeypointNode(graph, prev, curr, next, octave, maximum, arr);
+		vx_node node = vxFindSiftKeypointNode(graph, mag, prev, curr, next, octave, maximum, arr);
 		if (node)
 		{
 			status = vxVerifyGraph(graph);
@@ -988,27 +988,6 @@ VX_API_ENTRY vx_status VX_API_CALL vxuFindSiftKeypoint(vx_context context, vx_im
 	return status;
 }
 
-
-VX_API_ENTRY vx_status VX_API_CALL vxuVerifyKeypoint(vx_context context, vx_array before, vx_image mag, vx_int32 w, vx_int32 h, vx_int32 maximum, vx_array after, vx_image keyptimg)
-{
-	vx_status status = VX_FAILURE;
-	vx_graph graph = vxCreateGraph(context);
-	if (graph)
-	{
-		vx_node node = vxVerifyKeypointNode(graph, before, mag, w, h, maximum, after, keyptimg);
-		if (node)
-		{
-			status = vxVerifyGraph(graph);
-			if (status == VX_SUCCESS)
-			{
-				status = vxProcessGraph(graph);
-			}
-			vxReleaseNode(&node);
-		}
-		vxReleaseGraph(&graph);
-	}
-	return status;
-}
 
 
 VX_API_ENTRY vx_status VX_API_CALL vxuCalcSiftGradient(vx_context context, vx_image orient, vx_image magni, vx_array keypt, vx_array descr)

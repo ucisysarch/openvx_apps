@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_array.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_context.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_convolution.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_delay.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_distribution.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_dot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_error.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_graph.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_image.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_import.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_kernel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_log.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_lut.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_matrix.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_meta_format.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_node.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_node_api.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_osal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_parameter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_pyramid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_reference.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_remap.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_scalar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_target.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_threshold.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_type_pairs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_xml_export.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\vx_xml_import.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\sample\framework\openvx.def">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9265EA98-14FA-317D-A1ED-0C54A31AAABA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

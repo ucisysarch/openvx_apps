@@ -1,0 +1,40 @@
+﻿Build started 2016-08-22 오전 11:22:59.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\framework\openvx.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\framework\Debug\openvx.dll" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "..\..\helper\Debug\openvx-helper.lib" ..\..\debug\Debug\vx_debug.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCPMT /DEF:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/sample/framework/openvx.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/Debug/openvx.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/Debug/openvx.lib" /MACHINE:X64 /DLL openvx.dir\Debug\vx_array.obj
+         openvx.dir\Debug\vx_context.obj
+         openvx.dir\Debug\vx_convolution.obj
+         openvx.dir\Debug\vx_delay.obj
+         openvx.dir\Debug\vx_distribution.obj
+         openvx.dir\Debug\vx_dot.obj
+         openvx.dir\Debug\vx_error.obj
+         openvx.dir\Debug\vx_graph.obj
+         openvx.dir\Debug\vx_image.obj
+         openvx.dir\Debug\vx_import.obj
+         openvx.dir\Debug\vx_kernel.obj
+         openvx.dir\Debug\vx_log.obj
+         openvx.dir\Debug\vx_lut.obj
+         openvx.dir\Debug\vx_matrix.obj
+         openvx.dir\Debug\vx_memory.obj
+         openvx.dir\Debug\vx_meta_format.obj
+         openvx.dir\Debug\vx_node.obj
+         openvx.dir\Debug\vx_node_api.obj
+         openvx.dir\Debug\vx_osal.obj
+         openvx.dir\Debug\vx_parameter.obj
+         openvx.dir\Debug\vx_pyramid.obj
+         openvx.dir\Debug\vx_reference.obj
+         openvx.dir\Debug\vx_remap.obj
+         openvx.dir\Debug\vx_scalar.obj
+         openvx.dir\Debug\vx_target.obj
+         openvx.dir\Debug\vx_threshold.obj
+         openvx.dir\Debug\vx_type_pairs.obj
+         openvx.dir\Debug\vx_xml_export.obj
+         openvx.dir\Debug\vx_xml_import.obj
+     1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:REF' specification
+            Creating library C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/Debug/openvx.lib and object C:/Users/samsung/Desktop/vision/openvx_sample-1.0.1/build/Win/x64/sample/framework/Debug/openvx.exp
+         openvx.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\sample\framework\Debug\openvx.dll
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\sample\framework\openvx.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.81

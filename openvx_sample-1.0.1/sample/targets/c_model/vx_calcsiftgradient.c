@@ -47,17 +47,17 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 		//Rather we'll deal with 0~255 values which have been mapped from 0~6.28 radian values.
 
 
-		FILE* fff = NULL;
-		fff = fopen("www3.txt", "a+");
+		//FILE* fff = NULL;
+		//fff = fopen("www3.txt", "a+");
 
 
 
 		//neeeded kernels for small convolution.
 		//convolution matrix for entire window. sigma 1.5 (keypoint orientation)
-		vx_float32 window_convolution_mat[3][3] = { 
-			{ 0.095332, 0.118095, 0.095332 },
-			{0.118095, 0.146293, 0.118095},
-			{0.095332, 0.118095, 0.095332},
+		vx_float32 window_convolution_mat[3][3] = {
+			{ 0.095332f, 0.118095f, 0.095332f },
+			{ 0.118095f, 0.146293f, 0.118095f },
+			{ 0.095332f, 0.118095f, 0.095332f },
 
 		};
 
@@ -65,9 +65,9 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 
 		//convolution matrix for each patch (descriptor orientation)
 		vx_float32 patch_convolution_mat[3][3] = {
-			{ 0.110533, 0.111399, 0.110533 },
-			{ 0.111399, 0.112271, 0.111399 },
-			{ 0.110533, 0.111399, 0.110533 }
+			{ 0.110533f, 0.111399f, 0.110533f },
+			{ 0.111399f, 0.112271f, 0.111399f },
+			{ 0.110533f, 0.111399f, 0.110533f }
 
 		};
 
@@ -79,14 +79,19 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 		vx_int32 kpt_x, kpt_y;
 
 		vxQueryArray(keypts, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_keypts, sizeof(num_keypts));
-		vx_status st = vxAccessArrayRange(keypts, (vx_size)0, (vx_size)num_keypts, &stride, (void**)&base, VX_READ_ONLY);
+		//vx_status st = vxAccessArrayRange(keypts, (vx_size)0, (vx_size)num_keypts, &stride, (void**)&base, VX_READ_ONLY);
+		vxAccessArrayRange(keypts, (vx_size)0, (vx_size)num_keypts, &stride, (void**)&base, VX_READ_ONLY);
 
+		//if no keypoints were contained in array, just return
+		if (num_keypts <= 0)
+		{
+			return VX_SUCCESS;
+		}
 
-		fprintf(fff, "<%d>\n", num_keypts);
+		//fprintf(fff, "<%d>\n", num_keypts);
 
 		for (int kptidx = 0; kptidx < num_keypts; kptidx++)
 		{
-			
 			//retrieve a keypoint from array
 			vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, kptidx, stride);
 			kpt_x = xp->x; kpt_y = xp->y;
@@ -97,6 +102,8 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 			vx_float32 keypoint_orient;
 
 			// @ ----- a window containing 16 bits around a keypoint
+			// but, at first, orientations arr saved as unsigned 8 bit.(0~255)
+			// So we need to convert them to radian float. (0~255 => 0~6.28)
 			vx_float32 oriWin[16][16];		// - orientation values
 			vx_float32 magWin[16][16];		// - magnitude values
 
@@ -119,15 +126,22 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 
 			//access -> fill -> commit
 			vxAccessImagePatch(orien, &ori_imrect, ori_plane, &ori_imaddr, &ori_imbaseptr, VX_READ_ONLY);
+
 			for (int y = -7; y <= 8; y++)
 			{
 				for (int x = -7; x <= 8; x++)
 				{
-					vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(ori_imbaseptr, kpt_x + x, kpt_y + y, &ori_imaddr);
-					oriWin[7 + y][7 + x] = (*currpixel);
+					vx_uint8* currpixel = (vx_uint8 *)vxFormatImagePatchAddress2d(ori_imbaseptr, kpt_x + x, kpt_y + y, &ori_imaddr);
+					vx_float32 pixel_value = (vx_float32)(*currpixel);
+					pixel_value *= 6.28f;
+					pixel_value /= 255.0f;
+					if (pixel_value >= 6.28f) pixel_value = 0.0f;	//2*PHI == 0
+
+					oriWin[7 + y][7 + x] = pixel_value;
 				}
 
 			}
+			
 			vxCommitImagePatch(orien, &ori_imrect, ori_plane, &ori_imaddr, ori_imbaseptr);
 
 			// @ ----- get 16 MAGNITUDE pixels around keypoint to make 2d array
@@ -143,17 +157,17 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 
 			//access -> fill -> commit
 			vxAccessImagePatch(mag, &mag_imrect, mag_plane, &mag_imaddr, &mag_imbaseptr, VX_READ_ONLY);
+
 			for (int y = -7; y <= 8; y++)
 			{
 				for (int x = -7; x <= 8; x++)
 				{
 					vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(mag_imbaseptr, kpt_x + x, kpt_y + y, &mag_imaddr);
-					magWin[7+y][7+x] = (*currpixel);
+					magWin[7 + y][7 + x] = (*currpixel);
 				}
 
 			}
 			vxCommitImagePatch(mag, &mag_imrect, mag_plane, &mag_imaddr, mag_imbaseptr);
-
 
 
 			// @ ----- do gaussian on magnitude values and fill histogram
@@ -177,8 +191,13 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 
 					blurred_magWin[i][j] = sum;
 
+					//the index is subject to containing orientation.
+					//it must be 0~35 (over 35 == 0)
+					int ori_idx = ((int)(oriWin[i][j] * 360 / 6.28f) / 10);
+					if (ori_idx > 35) ori_idx = 0;
+
 					//add to histogram array, indexing will be done with following i, j
-					histogram_36[((int)(oriWin[i][j])) / 10] += sum;
+					histogram_36[ori_idx] += sum;
 
 				}
 			}
@@ -198,10 +217,11 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 				}
 			}
 			//dominant orientation of keypoint
-			keypoint_orient = (vx_float32)(10 * maxidx);
+			//10 : 360 = 1.744f : 6.28f 
+			keypoint_orient = (vx_float32)(0.1744f * maxidx);
 
 
-			// @ ----- do gaussian on orientation values
+			// @ ----- do gaussian on magnitude values for patch gaussian again
 			for (int i = 0; i < 16; i++)
 			{
 				for (int j = 0; j < 16; j++)
@@ -218,14 +238,22 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 						}
 					}
 
-					//subtract keypoint orientation from blurred orientation for rotation invariance.
-					//if it became negative, add 360 for avoid having negative values.
-					if (sum - keypoint_orient < 0.0)
-						sum += 360.0;
-				
+					//now, blurred_magWin contains blurred for patches.
+					//(Before, it was containing blurred for window)
 					blurred_magWin[i][j] = sum;
 
 
+				}
+			}
+
+			// @ ----- subtract keypoint dominant orientation from orientation window.
+			for (int i = 0; i < 16; i++)
+			{
+				for (int j = 0; j < 16; j++)
+				{
+					//every orientation values must be positibe value.
+					oriWin[i][j] -= keypoint_orient;
+					if (oriWin[i][j] < 0.0f) oriWin[i][j] += 6.28f;
 				}
 			}
 
@@ -240,15 +268,21 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					vx_float32 patch_histogram[8];
+					vx_float32 patch_histogram[8] = { 0.0f, };
 
+					//a patch.
 					for (int pi = 0; pi < 4; pi++)
 					{
 						for (int pj = 0; pj < 4; pj++)
 						{
-							patch_histogram[((int)blurred_magWin[i * 4 + pi][j * 4 + pj]) / 45] += blurred_magWin[i * 4 + pi][j * 4 + pj];
+							int ori_idx = (int)(oriWin[i * 4 + pi][j * 4 + pj] / 0.785f);
+							if (ori_idx > 7) ori_idx = 0;
+
+							patch_histogram[ori_idx] += blurred_magWin[i * 4 + pi][j * 4 + pj];
 						}
 					}
+
+					// 45 : 360 = 0.785f : 6.28f
 
 					//[0] = 0~44		[1] = 45~89				[2] = 90~134
 					//[3] = 135~179		[4] = 180~224			[5] = 225~269
@@ -258,134 +292,27 @@ static vx_status VX_CALLBACK vxCalcSiftGradientKernel(vx_node node, vx_reference
 					for (int di = 0; di < 8; di++)
 						descriptor_arr[descr_idx * 8 + di] = patch_histogram[di];
 
-					descr_idx += 8;
+					descr_idx++;
 
 				}
 			}
-			
+
 			// @ ----- add to array
 			for (int di = 0; di < 128; di++)
 			{
-				vxAddArrayItems(descr, 1, &descriptor_arr[di], 0);
+				vxAddArrayItems(descr, 1, &descriptor_arr[di], sizeof(vx_float32));
+				//fprintf(fff, "%f ", descriptor_arr[di]);
 			}
+
+			//fprintf(fff, "\n");
 
 		}
 
 		vxCommitArrayRange(keypts, 0, num_keypts, base);
 
 
-		fclose(fff);
-
-		//FILE* fff = NULL;
-		//fff = fopen("www2.txt", "a+");
-
-		////magnitude threshold
-		//int MAGNITUDE_THRESHOLD = 300;
-
-		////for access to array
-		//vx_size i, j, stride = 0ul;
-		//void* base = 0;
-		//vx_coordinates2d_t foundKey;
-
-		////for access to magnitude image
-		//vx_rectangle_t imrect;
-		//vx_uint32 plane = 0;
-		//vx_imagepatch_addressing_t imaddr;
-		//void* imbaseptr = NULL;
-
-		////for writing to output vx image
-		//vx_rectangle_t output_imrect;
-		//vx_uint32 output_plane = 0;
-		//vx_imagepatch_addressing_t output_imaddr;
-		//void* output_imbaseptr = NULL;
-
-		////array data
-		//vx_size num_items;
-		//vx_status st;
-
-		//vx_uint32 w, h;	//images' width&height
-
-		////get width and height from image
-		//vxQueryImage(mag, VX_IMAGE_ATTRIBUTE_WIDTH, &w, sizeof(w));
-		//vxQueryImage(mag, VX_IMAGE_ATTRIBUTE_HEIGHT, &h, sizeof(h));
-
-		////get length of array and permission to access array
-		//vxQueryArray(before_arr, VX_ARRAY_ATTRIBUTE_NUMITEMS, &num_items, sizeof(num_items));
-		//st = vxAccessArrayRange(before_arr, (vx_size)0, (vx_size)num_items, &stride, (void**)&base, VX_READ_ONLY);
-		//if (st != VX_SUCCESS) fprintf(fff, "ACCESS ARAAY FAILED\n");
-
-		////setting patch as entire size of image and get permission to access image
-		//imrect.start_x = imrect.start_y = 0;
-		//imrect.end_x = w; imrect.end_y = h;
-		//st = vxAccessImagePatch(mag, &imrect, plane, &imaddr, &imbaseptr, VX_READ_ONLY);
-		//if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [1]\n");
-
-		////setting patch for output vx_image for keypoint.
-		//output_imrect.start_x = output_imrect.start_y = 0;
-		//output_imrect.end_x = w; output_imrect.end_y = h;
-		//st = vxAccessImagePatch(output_image, &output_imrect, output_plane, &output_imaddr, &output_imbaseptr, VX_READ_AND_WRITE);
-		//if (st != VX_SUCCESS) fprintf(fff, "ACCESS IMAGE FAILED [2]\n");
-
-		//vx_int32 wwval, hhval;
-		//vxAccessScalarValue(img_width, &wwval);
-		//vxAccessScalarValue(img_height, &hhval);
-
-		////fprintf(fff, "w %d, h %d\n", wwval, hhval);
-		//
-		//for (i = 0; i < hhval; i++)
-		//{
-		//	for (j = 0; j < wwval; j++)
-		//	{
-		//		vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, j, i, &output_imaddr);
-		//		(*outputpixel) = (vx_uint8)0;
-		//	}
-		//}
-		//
-
-
-		//for (i = 0; i < num_items; i++)
-		//{
-		//	vx_coordinates2d_t* xp = &vxArrayItem(vx_coordinates2d_t, base, i, stride);
-
-		//	vx_int16* currpixel = (vx_int16 *)vxFormatImagePatchAddress2d(imbaseptr, xp->x, xp->y, &imaddr);
-		//	
-		//	if ((*currpixel) >= MAGNITUDE_THRESHOLD)
-		//	{
-		//		fprintf(fff, "%d %d\n", xp->x, xp->y);
-
-		//		//add to after verification array
-		//		foundKey.x = (vx_uint32)xp->x;
-		//		foundKey.y = (vx_uint32)xp->y;
-		//		vxAddArrayItems(after_arr, 1, &foundKey, 0);
-
-		//		vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, xp->x, xp->y, &output_imaddr);
-		//		(*outputpixel) = (vx_uint8)255;
-		//	}
-
-		//}
-		//vxCommitArrayRange(before_arr, 0, num_items, base);
-		//vxCommitImagePatch(mag, &imrect, plane, &imaddr, imbaseptr);
-		//vxCommitImagePatch(output_image, &output_imrect, output_plane, &output_imaddr, output_imbaseptr);
-
-		///////////////////////////////////
-		//FILE* fff2;
-		//fff2 = fopen("outim.pgm", "wb");
-
-		//fprintf(fff2, "P5\n%d %d\n255\n", wwval, hhval);
-		//for (i = 0; i < hhval; i++)
-		//{
-		//	for (j = 0; j < wwval; j++)
-		//	{
-		//		vx_uint8* outputpixel = (vx_uint8*)vxFormatImagePatchAddress2d(output_imbaseptr, j, i, &output_imaddr);
-		//		fprintf(fff2, "%c", (*outputpixel));
-		//	}
-		//}
-
-		//fclose(fff2);
-		///////////////////////////////////
-
-
 		//fclose(fff);
+
 
 
 		return VX_SUCCESS;
@@ -456,7 +383,7 @@ static vx_status VX_CALLBACK vxCalcSiftGradientOutputValidator(vx_node node, vx_
 	{
 		ptr->type = VX_TYPE_ARRAY;
 		ptr->dim.array.item_type = VX_TYPE_FLOAT32;
-		ptr->dim.array.capacity = 50000;
+		ptr->dim.array.capacity = 30000;
 		//no defined capacity requirement
 		status = VX_SUCCESS;
 	}

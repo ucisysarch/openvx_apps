@@ -53,7 +53,6 @@ LOCAL_SRC_FILES := vx_interface.c \
     vx_optpyrlk.c \
     vx_scale.c \
     vx_threshold.c \
-    vx_verifykeypoint.c \
     vx_calcsiftgradient.c
 LOCAL_C_INCLUDES := $(OPENVX_INC) $(OPENVX_TOP)/$(OPENVX_SRC)/include $(OPENVX_TOP)/$(OPENVX_SRC)/extensions/include
 LOCAL_SHARED_LIBRARIES := libdl libutils libcutils libbinder libhardware libion libgui libui libopenvx

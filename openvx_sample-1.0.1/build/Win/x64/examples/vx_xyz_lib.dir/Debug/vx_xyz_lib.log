@@ -1,0 +1,10 @@
+﻿Build started 2016-08-22 오전 11:23:01.
+     1>Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" on node 4 (Build target(s)).
+     1>Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\vx_xyz_lib.lib" /NOLOGO /MACHINE:X64  /machine:x64 vx_xyz_lib.dir\Debug\vx_xyz_lib.obj
+         vx_xyz_lib.vcxproj -> C:\Users\samsung\Desktop\vision\openvx_sample-1.0.1\build\Win\x64\examples\Debug\vx_xyz_lib.lib
+     1>Done Building Project "C:\Users\samsung\Documents\GitHub\openvx_apps\openvx_sample-1.0.1\build\Win\x64\examples\vx_xyz_lib.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.69
