@@ -1,13 +1,22 @@
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include <VX/vx.h>
 #include <VX/vxu.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <libgen.h>
+
 
 #define OCTAVE_NUM 5
 #define OCTAVE_LAYERS 5
-#define INPUT_IMAGE "mandrill.pgm"
 
 #define MAX_KEYPOINTS_PER_THREE_DOGS 200
+
+static char INPUT_IMAGE[64] = {0, };
+static char BASEFILENAME[64] = {0, };
+struct stat st = {0};
 
 //valuables for custom convoution
 static const vx_uint32 gaussian1Scale = 1024;
@@ -94,16 +103,23 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 {
 
 	int na;
+	printf("Wait, saving status of images feature&descriptors.. > ");
 	scanf("%d", &na);
 
 	printf("recording status of image..\n");
+	
+	if (stat("record", &st) == -1) {
+	    mkdir("record", 0777);
+	}
 
 	vx_size num_items[(OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2))];
 	vx_size key_num_items[(OCTAVE_NUM * (OCTAVE_LAYERS - 1 - 2))];
+	strcpy(BASEFILENAME, basename(INPUT_IMAGE));
+
 
 	FILE* recordFile;
 	char recordFilename[64] = { 0, };
-	sprintf(recordFilename, "record\\%s_status.txt", INPUT_IMAGE);
+	sprintf(recordFilename, "record/%s_status.txt", BASEFILENAME);
 	if ((recordFile = fopen(recordFilename, "w")) == NULL)
 	{
 		printf("can't write to recordFile..\n");
@@ -134,8 +150,8 @@ void recordImageStatus(vx_array* keypt_arr, vx_array* descr_arr)
 		char recordKeyptFilename[64] = { 0, };
 		char recordDescrFilename[64] = { 0, };
 
-		sprintf(recordKeyptFilename, "record\\%s_keypt%d.txt", INPUT_IMAGE, (k + 1));
-		sprintf(recordDescrFilename, "record\\%s_descr%d.txt", INPUT_IMAGE, (k + 1));
+		sprintf(recordKeyptFilename, "record/%s_keypt%d.txt", BASEFILENAME, (k + 1));
+		sprintf(recordDescrFilename, "record/%s_descr%d.txt", BASEFILENAME, (k + 1));
 
 		if ((record_keypt = fopen(recordKeyptFilename, "w")) == NULL)
 			exit(1);
@@ -256,6 +272,13 @@ int main(int argc, char* argv[])
 	int width;
 	int height;
 
+	if(argc < 2)
+	{
+		write(2, "wrong parameter\n", strlen("wrong parameter\n"));
+		exit(1);
+	}
+
+	strcpy(INPUT_IMAGE, argv[1]);
 	FILE* in = fopen(INPUT_IMAGE, "rb");
 
 	// Declare pointer of vx_uint8 as amount of width*height.
@@ -547,3 +570,4 @@ int main(int argc, char* argv[])
 
 	//scanf("%d", &num);
 }
+
